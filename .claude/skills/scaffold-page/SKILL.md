@@ -21,6 +21,23 @@ following the project's feature-first MVVM conventions from CLAUDE.md.
 
 If either is ambiguous, ask before proceeding.
 
+## Step 0 — Ensure the MVVM toolkit is referenced
+
+The scaffolded ViewModel uses [`CommunityToolkit.Mvvm`](https://learn.microsoft.com/dotnet/communitytoolkit/mvvm/)
+(`ObservableObject` + `[RelayCommand]`). Check whether
+`src/TheDeskWatch.MobileApp/TheDeskWatch.MobileApp.csproj` already has a
+`<PackageReference Include="CommunityToolkit.Mvvm" .../>`.
+
+If it does **not**, the `.csproj` is guardrailed (see CLAUDE.md): stop and ask the user to
+approve adding the package before continuing. Once approved, add:
+
+```xml
+<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+```
+
+(use the latest stable version). Do not proceed with the scaffold until the package is present,
+or the build in Step 4 will fail.
+
 ## Step 1 — Create the three new files
 
 All paths are relative to the repository root. Create parent directories as needed.
@@ -34,13 +51,19 @@ All paths are relative to the repository root. Create parent directories as need
              xmlns:vm="clr-namespace:TheDeskWatch.MobileApp.Pages.{Feature}.ViewModels"
              x:Class="TheDeskWatch.MobileApp.Pages.{Feature}.Pages.{Page}Page"
              x:DataType="vm:{Page}ViewModel"
-             Title="{Page}">
+             Title="{Binding Title}">
+    <Button Text="Do Nothing"
+            Command="{Binding DoNothingCommand}" />
 </ContentPage>
 ```
 
-The ContentPage element MUST have no child elements — leave the body completely empty.
-Do NOT add Labels, StackLayouts, placeholder content, or any UI elements.
-The developer will fill in the UI themselves.
+- The page `Title` MUST bind to the ViewModel's `Title` property (`Title="{Binding Title}"`),
+  never a hard-coded string.
+- The only child is the single `Button` above, bound to the ViewModel's generated
+  `DoNothingCommand`. Do NOT add any other UI (Labels, StackLayouts, placeholder content) —
+  the developer fills in the rest themselves.
+- Keep the button free of inline style literals (no hard-coded colors, sizes, or spacing),
+  per the UI Styling Rules in CLAUDE.md.
 
 ### Page code-behind — `src/TheDeskWatch.MobileApp/Pages/{Feature}/Pages/{Page}Page.xaml.cs`
 
@@ -60,14 +83,37 @@ public partial class {Page}Page : ContentPage
 ### ViewModel — `src/TheDeskWatch.MobileApp/Pages/{Feature}/ViewModels/{Page}ViewModel.cs`
 
 ```csharp
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
 namespace TheDeskWatch.MobileApp.Pages.{Feature}.ViewModels;
 
-public sealed class {Page}ViewModel
+public sealed partial class {Page}ViewModel : ObservableObject
 {
+    public {Page}ViewModel()
+    {
+        Title = "{Page}";
+    }
+
+    public string Title { get; }
+
+    [RelayCommand]
+    private void DoNothing()
+    {
+    }
 }
 ```
 
-The ViewModel body MUST be empty — no constructor, no properties, no fields.
+The ViewModel:
+
+- Is a `sealed partial` class deriving from `ObservableObject` (required for the
+  `[RelayCommand]` source generator).
+- MUST declare a constructor that assigns the `Title` property — the title shown by the page.
+  Default it to the `{Page}` name unless the user specifies a different title.
+- Exposes a `Title` property bound by the page's `Title="{Binding Title}"`.
+- Declares a single `[RelayCommand]`-attributed `DoNothing` method with an empty body. The
+  generator produces the `DoNothingCommand` property the button binds to. It intentionally
+  does nothing — the developer fills in the behavior later.
 
 ## Step 2 — Register in DI (`src/TheDeskWatch.MobileApp/MauiProgram.cs`)
 
