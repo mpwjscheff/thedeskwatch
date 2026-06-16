@@ -1,0 +1,15 @@
+<Project>
+
+  <!--
+    Directory.Build.props stops MSBuild's upward search when found.
+    This import re-chains to the repo root so all root settings (Nullable,
+    ImplicitUsings, TreatWarningsAsErrors, AnalysisLevel) still apply to test projects.
+  -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <!-- Method_State_Expectation underscore naming is idiomatic for test methods -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+
+</Project>

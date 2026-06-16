@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Block direct commits to main
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$branch" = "main" ]; then
+    echo "Commit blocked: direct commits to 'main' are not allowed."
+    echo "Create a worktree and branch: git worktree add ../<branch-name> -b <branch-name>"
+    exit 1
+fi
+
+echo "Running build check..."
+dotnet build TheDeskWatch.slnx
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "Commit blocked: fix compilation errors before committing."
+    exit 1
+fi
+
+echo "Running unit tests..."
+dotnet test TheDeskWatch.slnx --no-build
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "Commit blocked: fix failing unit tests before committing."
+    exit 1
+fi

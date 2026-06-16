@@ -1,0 +1,183 @@
+# CLAUDE.md
+
+## Project Overview
+
+TheDeskWatch is a .NET 10 MAUI cross-platform app targeting Android and iOS. The solution uses the modern `.slnx` format.
+
+## Commit Message Convention
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <description>.`
+
+- **One line only** (no body/footer), **ends with a period**, **no AI attribution** (no `Co-Authored-By`, "Generated with", or tool names).
+- **`<type>`**: `feat`, `fix`, `refactor`, `test`, `chore`, `docs`, `style`, `perf`, or `ci`.
+- **`<scope>`**: the feature or layer affected (e.g. `home`, `persistence`, `auth`); omit when global.
+- **`<description>`**: imperative, lowercase, concise.
+
+Example: `feat(home): add clock widget to home page.`
+
+## Agent Workflow
+
+> **Never work directly on `main`.** Every task — bug fix, feature, spike — gets its own worktree + branch.
+
+```powershell
+git worktree add ..\TheDeskWatch-<branch-name> -b <branch-name>  # create (from repo root)
+# ...do all edits in the new worktree path, then open a PR from that branch...
+git worktree remove ..\TheDeskWatch-<branch-name>; git branch -d <branch-name>  # clean up after merge
+```
+
+## First-time setup
+
+After cloning, activate the pre-commit hook (blocks commits that don't compile):
+
+```powershell
+git config core.hooksPath .githooks
+```
+
+## Build & Run Commands
+
+```powershell
+dotnet build TheDeskWatch.slnx                                      # build solution
+dotnet build src/TheDeskWatch.MobileApp -f net10.0-android -c Debug # build for Android
+dotnet build src/TheDeskWatch.MobileApp -f net10.0-ios -c Debug     # build for iOS
+dotnet test TheDeskWatch.slnx                                       # run all tests
+dotnet test src/TheDeskWatch.Application.Tests                      # run Application tests only
+```
+
+## Static Analysis Guardrails
+
+`Directory.Build.props` enforces `TreatWarningsAsErrors=true` and `AnalysisLevel=latest-recommended` across every project — every Roslyn diagnostic is a build error, with no separate analysis step. **Never open a PR while `dotnet build TheDeskWatch.slnx` reports any error or warning.**
+
+**Never suppress a diagnostic** (`#pragma warning disable`, `[SuppressMessage]`, or `<NoWarn>` in any `.csproj`/`.props`) without explicit user approval. Before proposing one: identify the diagnostic ID and why it fires, explain why fixing the root cause isn't feasible, then wait for approval. The only standing exception is `CA1707` in `tests/Directory.Build.props` (approved for underscore-named test methods).
+
+## Architecture
+
+Three-tier architecture, reflected in the solution folders (`/10. PRESENTATION/`, `/20. APPLICATION/`, `/30. PERSISTENCE/`, `/50. TESTS/`):
+
+- **`MobileApp/`** — MAUI presentation layer; the only project that may reference the MAUI SDK. Entry point `MauiProgram.cs` (DI setup), navigation shell `AppShell.xaml`. Platform code lives in `Platforms/Android/` and `Platforms/iOS/`; cross-platform code at the project root. XAML Source Generation is enabled.
+- **`MobileApp.Contracts/`** — MAUI-agnostic interfaces for platform capabilities (e.g. `IFileService`, `IPermissionsService`). Plain .NET library, no MAUI reference. The only project allowed to define such interfaces; `Application` and `Persistence` reference it to use a platform capability.
+- **`Application/`** — Business logic and use cases, organised feature-first under `Features/`.
+- **`Domain/`** — Domain models as stored by `Persistence`.
+- **`Persistence/`** — Data access, repositories.
+- **`Application.Tests/`** — Unit tests for the Application layer.
+
+### Adding a platform capability
+
+1. Define the interface in `MobileApp.Contracts` (e.g. `IFileService`).
+2. Implement it in `MobileApp/Services/` (e.g. `MauiFileService.cs`).
+3. Register the implementation in `MauiProgram.cs`.
+4. Layers needing it (`Application`, `Persistence`) depend on the interface — never on the MAUI implementation.
+
+## Presentation Layer Guardrails
+
+**Enforced by hooks.** Never modify `TheDeskWatch.MobileApp.csproj` or any file under `src/TheDeskWatch.MobileApp/Platforms/` without explicit user approval — first explain what you intend to change and why, keep it minimal, then wait for approval.
+
+`Platforms/` files control platform config (`ApplicationId`, `Info.plist` entitlements, `AndroidManifest.xml` permissions) where a wrong change can break or block publishing — so for those, also state which platform (**Android**/**iOS**) the change targets before asking.
+
+## Presentation (`MobileApp`)
+
+Feature-first MVVM under a top-level `Pages/` folder. Each feature gets its own subfolder — never add page/viewmodel files to the `Pages/` root.
+
+```
+Pages/Home/
+├── Views/        # Reusable self-contained UI fragments (ContentView, DataTemplate)
+├── Pages/        # Full pages: one .xaml + one .xaml.cs each
+└── ViewModels/   # One ViewModel per page
+```
+
+- **ViewModels** depend only on `Application` (use cases, services, DTOs); never on `Persistence`, `Domain`, or any repository type.
+- **Pages** code-behind is thin: set `BindingContext` to the injected ViewModel; nothing else beyond UI lifecycle (e.g. `OnAppearing`).
+- **DI**: every page and ViewModel is registered in `MauiProgram.cs` (e.g. `AddTransient<HomePage>()`) and resolved by constructor injection — never created manually.
+
+### Services vs. Helpers
+
+- **`Services/`** — MAUI implementations of `MobileApp.Contracts` interfaces. One class per interface, `Maui` prefix (e.g. `MauiFileService : IFileService`). Nothing else.
+- **`Helpers/`** — thin, (near-)stateless abstractions over internal MAUI concerns so nothing calls a framework API directly. E.g. a navigation service wrapping `Shell.Current.GoToAsync`, or an `IDialogService` as the single caller of `DisplayAlert`. Pages/ViewModels call these services, never the framework API.
+
+## Application layer
+
+Uses [LiteBus](https://github.com/litenova/LiteBus) as mediator (`LiteBus.Commands.Abstractions`, `LiteBus.Queries.Abstractions`). Inject `ICommandMediator` / `IQueryMediator` into ViewModels. Registered in `MauiProgram.cs`:
+
+```csharp
+builder.Services.AddLiteBus(config =>
+    config.AddCommandModule()
+          .AddQueryModule()
+          .RegisterFromAssembly(typeof(MauiProgram).Assembly)
+          .RegisterFromAssembly(typeof(SomeApplicationType).Assembly));
+```
+
+Feature-first under `Features/{Feature}/` (`Home`, `Settings`, …), each with `Commands/`, `Queries/`, and optional `Services/`. Commands and queries always return `OneOf<T, ApiError>` (success first) — handlers never propagate exceptions to the caller.
+
+### Commands
+
+Command + handler in one file under `Features/{Feature}/Commands/`. The command is `public sealed`; the handler is `internal sealed` with a primary constructor, catching exceptions internally and mapping to `ApiError`. `CancellationToken` is last and defaults to `default`.
+
+```csharp
+public sealed class RequestEmployeeDeletionCommand : ICommand<OneOf<Success, ApiError>> { }
+
+internal sealed class RequestEmployeeDeletionCommandHandler(IBlinkyApiClient apiClient)
+    : ICommandHandler<RequestEmployeeDeletionCommand, OneOf<Success, ApiError>>
+{
+    public async Task<OneOf<Success, ApiError>> HandleAsync(
+        RequestEmployeeDeletionCommand command, CancellationToken cancellationToken = default)
+    {
+        try { await apiClient.DeleteAccountAsync(cancellationToken); }
+        catch (Exception e) { Debug.WriteLine(e); return new ApiError(); }
+        return new Success();
+    }
+}
+```
+
+### Queries
+
+Query, response DTO, and handler in one file under `Features/{Feature}/Queries/`. The query is `public` (non-sealed) using interface-shorthand syntax; the response is a `public sealed record` (nested models inside it); the handler is `public sealed` with a primary constructor. `CancellationToken cancellationToken = new()` is last. Private helpers swallow their own errors and return a safe default, so `HandleAsync` needs no top-level try/catch.
+
+```csharp
+public class GetProfileQuery : IQuery<OneOf<GetProfileQueryResponse, ApiError>>;
+
+public sealed record GetProfileQueryResponse
+{
+    public string? CurrentBalance { get; set; }
+
+    public sealed record SavingGoalModel
+    {
+        public required string Title { get; init; }
+        public int Costs { get; init; }
+    }
+}
+
+public sealed class GetProfileHandler(IBlinkyApiClient apiClient)
+    : IQueryHandler<GetProfileQuery, OneOf<GetProfileQueryResponse, ApiError>>
+{
+    public async Task<OneOf<GetProfileQueryResponse, ApiError>> HandleAsync(
+        GetProfileQuery query, CancellationToken cancellationToken = new())
+    {
+        var profile = await apiClient.GetProfileAsync(CancellationToken.None);
+        return new GetProfileQueryResponse { CurrentBalance = profile.Balance.ToString() };
+    }
+}
+```
+
+### Feature services
+
+Logic shared across commands/queries goes in `Features/{Feature}/Services/`: define an interface, inject the implementation via DI — never call the concrete class directly.
+
+## Testing
+
+- `Application.Tests` tests the Application layer exclusively — every command, query, and service must have corresponding tests.
+- Mirror the source folder structure: `Application/Features/Home/Commands/CreateTask/…` → `Application.Tests/Features/Home/Commands/CreateTask/…Tests.cs`.
+- Never cross layer boundaries — stub/mock `Persistence` and platform dependencies; never reference `TheDeskWatch.Persistence` or `TheDeskWatch.MobileApp`.
+
+## Key Conventions
+
+- Nullable reference types are enabled everywhere — annotate accordingly.
+- `<ImplicitUsings>enable</ImplicitUsings>` is on; common namespaces need no explicit `using`.
+- Prefer abstraction over direct framework calls: if a concern (alerts, navigation, permissions, …) is used in more than one place, introduce a service and inject it — Contracts implementations in `Services/`, internal MAUI abstractions in `Helpers/`, infrastructure concerns the same way inside `Application`.
+
+## UI Styling Rules
+
+Every design token — colors, font sizes, spacing, corner radii — must live in the resource files and be referenced by key (`{StaticResource KeyName}`). Never inline a literal color, size, or spacing value in page/view XAML.
+
+- **Single source of truth**: colors in `Resources/Styles/Colors.xaml`; sizes, margins, corner radii, font sizes, and composite styles in `Resources/Styles/Styles.xaml`.
+- **Light & dark mode**: every color needs both variants via `AppThemeBinding` — never add a color that works in only one mode.
+- **Naming**: semantic, purpose-based keys (`SurfaceBackground`, `PrimaryText`, `AccentColor`), not appearance-based.
+- **Component library**: prefer a built-in MAUI control; if none fits, use the [.NET MAUI Community Toolkit](https://github.com/CommunityToolkit/Maui) before any other library or a custom control.

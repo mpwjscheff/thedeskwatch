@@ -1,0 +1,60 @@
+# Override any parent .gitignore that might exclude project-level Claude config
+!.claude/
+!.claude/**
+
+# Build output
+bin/
+obj/
+/packages/
+
+# NuGet
+*.nupkg
+*.snupkg
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Rider / IntelliJ
+.idea/
+riderModule.iml
+/_ReSharper.Caches/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.DocumentRevisions-V100
+.VolumeIcon.icns
+Icon?
+__MACOSX/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# MAUI / Mobile — signing & provisioning (secrets, never commit)
+*.keystore
+*.jks
+*.p12
+*.cer
+*.mobileprovision
+*.xcuserstate
+xcuserdata/

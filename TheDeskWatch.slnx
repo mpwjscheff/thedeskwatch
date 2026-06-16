@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/10. PRESENTATION/">
+    <Project Path="src/TheDeskWatch.MobileApp.Contracts/TheDeskWatch.MobileApp.Contracts.csproj" />
+    <Project Path="src/TheDeskWatch.MobileApp/TheDeskWatch.MobileApp.csproj" />
+  </Folder>
+  <Folder Name="/20. APPLICATION/">
+    <Project Path="src/TheDeskWatch.Application/TheDeskWatch.Application.csproj" />
+  </Folder>
+  <Folder Name="/30. PERSISTENCE/">
+    <Project Path="src/TheDeskWatch.Persistence/TheDeskWatch.Persistence.csproj" />
+    <Project Path="src/TheDeskWatch.Domain/TheDeskWatch.Domain.csproj" />
+  </Folder>
+  <Folder Name="/50. TESTS/">
+    <Project Path="tests/TheDeskWatch.Application.Tests/TheDeskWatch.Application.Tests.csproj" />
+    <Project Path="tests/TheDeskWatch.Architecture.Tests/TheDeskWatch.Architecture.Tests.csproj" />
+  </Folder>
+</Solution>
