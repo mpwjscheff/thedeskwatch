@@ -22,7 +22,7 @@ public class LayerDependencyTests
     // Update these anchors if the placeholder types are replaced.
     private static readonly Assembly ApplicationAssembly = typeof(TheDeskWatch.Application.Class1).Assembly;
     private static readonly Assembly DomainAssembly = typeof(TheDeskWatch.Domain.Class1).Assembly;
-    private static readonly Assembly PersistenceAssembly = typeof(TheDeskWatch.Persistence.Class1).Assembly;
+    private static readonly Assembly PersistenceAssembly = typeof(TheDeskWatch.Persistence.ServiceCollectionExtensions).Assembly;
 
     [Fact]
     public void Application_DoesNotDependOn_Persistence()
