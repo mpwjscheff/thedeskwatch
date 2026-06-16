@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TheDeskWatch.Persistence;
 
 namespace TheDeskWatch.MobileApp;
 
@@ -15,10 +16,15 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "deskwatch.db");
+        builder.Services.AddPersistence(dbPath);
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
 
-        return builder.Build();
+        var app = builder.Build();
+        app.Services.InitializeDatabase();
+        return app;
     }
 }
