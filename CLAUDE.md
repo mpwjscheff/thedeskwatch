@@ -105,11 +105,11 @@ builder.Services.AddLiteBus(config =>
           .RegisterFromAssembly(typeof(SomeApplicationType).Assembly));
 ```
 
-Feature-first under `Features/{Feature}/` (`Home`, `Settings`, …), each with `Commands/`, `Queries/`, and optional `Services/`. Commands and queries always return `OneOf<T, ApiError>` (success first) — handlers never propagate exceptions to the caller.
+Feature-first under `{Feature}/` (`Home`, `Settings`, …), each with `Commands/`, `Queries/`, and optional `Services/`. Commands and queries always return `OneOf<T, ApiError>` (success first) — handlers never propagate exceptions to the caller.
 
 ### Commands
 
-Command + handler in one file under `Features/{Feature}/Commands/`. The command is `public sealed`; the handler is `internal sealed` with a primary constructor, catching exceptions internally and mapping to `ApiError`. `CancellationToken` is last and defaults to `default`.
+Command + handler in one file under `{Feature}/Commands/`. The command is `public sealed`; the handler is `internal sealed` with a primary constructor, catching exceptions internally and mapping to `ApiError`. `CancellationToken` is last and defaults to `default`.
 
 ```csharp
 public sealed class RequestEmployeeDeletionCommand : ICommand<OneOf<Success, ApiError>> { }

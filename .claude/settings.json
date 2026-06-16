@@ -7,7 +7,6 @@
       "Bash(rmdir *)",
       "Bash(git reset --hard*)",
       "Bash(git clean *)",
-      "Bash(git push*)",
       "Bash(git push --force*)",
       "Bash(git push -f*)",
       "Bash(git push origin --delete*)",
