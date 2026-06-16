@@ -4,4 +4,12 @@
         <TargetFramework>net10.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\TheDeskWatch.Domain\TheDeskWatch.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
