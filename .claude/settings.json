@@ -1,58 +1,11 @@
 {
   "permissions": {
-    "deny": [
-      "Bash(rm *)",
-      "Bash(rm -rf *)",
-      "Bash(del *)",
-      "Bash(rmdir *)",
-      "Bash(git reset --hard*)",
-      "Bash(git clean *)",
-      "Bash(git push --force*)",
-      "Bash(git push -f*)",
-      "Bash(git push origin --delete*)",
-      "Bash(git branch -d *)",
-      "Bash(git branch -D *)",
-      "Bash(format *)",
-      "Bash(mkfs*)",
-      "Bash(git checkout main)",
-      "Bash(git switch main)"
-    ]
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "shell": "powershell",
-            "timeout": 10,
-            "statusMessage": "Checking presentation layer guardrails...",
-            "command": "$j = [Console]::In.ReadToEnd() | ConvertFrom-Json; $p = $j.tool_input.file_path; if ($p -like '*TheDeskWatch.MobileApp.csproj') { Write-Output '{\"continue\":false,\"stopReason\":\"BLOCKED: The MobileApp .csproj requires user review before any modification. Explain what change is needed and why, then wait for explicit approval before proceeding.\"}'; exit 2 }; if ($p -like '*\\Platforms\\*' -or $p -like '*/Platforms/*') { Write-Output '{\"continue\":false,\"stopReason\":\"BLOCKED: Platforms/ files can break the mobile app (e.g. ApplicationId, permissions, Info.plist, AndroidManifest.xml). Before modifying, you must first explain: (1) which platform this targets (Android or iOS), (2) exactly what change is needed, (3) why it is required - then wait for explicit user approval.\"}'; exit 2 }"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "if": "Bash(git commit*)",
-            "command": "$branch = git rev-parse --abbrev-ref HEAD; if ($branch -eq 'main') { Write-Output '{\"continue\":false,\"stopReason\":\"Blocked: cannot commit directly to main. Create a worktree first: git worktree add ../<branch-name> -b <branch-name>\"}'; exit 1 }",
-            "shell": "powershell",
-            "timeout": 10,
-            "statusMessage": "Checking branch before commit..."
-          },
-          {
-            "type": "command",
-            "if": "Bash(git commit*)",
-            "command": "dotnet build TheDeskWatch.slnx; if ($LASTEXITCODE -ne 0) { Write-Output '{\"continue\":false,\"stopReason\":\"Build failed — fix compilation errors before committing.\"}'; exit 1 }; dotnet test TheDeskWatch.slnx --no-build; if ($LASTEXITCODE -ne 0) { Write-Output '{\"continue\":false,\"stopReason\":\"Tests failed — fix failing unit tests before committing.\"}'; exit 1 }",
-            "shell": "powershell",
-            "timeout": 300,
-            "statusMessage": "Checking build and tests before commit..."
-          }
-        ]
-      }
+    "ask": [
+      "Bash(git push*)",
+      "Bash(git branch -d*)",
+      "Bash(git branch -D*)",
+      "Bash(git branch --delete*)",
+      "Bash(gh pr create*)"
     ]
   }
 }

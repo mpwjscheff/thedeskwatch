@@ -21,23 +21,6 @@ following the project's feature-first MVVM conventions from CLAUDE.md.
 
 If either is ambiguous, ask before proceeding.
 
-## Step 0 — Ensure the MVVM toolkit is referenced
-
-The scaffolded ViewModel uses [`CommunityToolkit.Mvvm`](https://learn.microsoft.com/dotnet/communitytoolkit/mvvm/)
-(`ObservableObject` + `[RelayCommand]`). Check whether
-`src/TheDeskWatch.MobileApp/TheDeskWatch.MobileApp.csproj` already has a
-`<PackageReference Include="CommunityToolkit.Mvvm" .../>`.
-
-If it does **not**, the `.csproj` is guardrailed (see CLAUDE.md): stop and ask the user to
-approve adding the package before continuing. Once approved, add:
-
-```xml
-<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-```
-
-(use the latest stable version). Do not proceed with the scaffold until the package is present,
-or the build in Step 4 will fail.
-
 ## Step 1 — Create the three new files
 
 All paths are relative to the repository root. Create parent directories as needed.
@@ -57,13 +40,9 @@ All paths are relative to the repository root. Create parent directories as need
 </ContentPage>
 ```
 
-- The page `Title` MUST bind to the ViewModel's `Title` property (`Title="{Binding Title}"`),
-  never a hard-coded string.
-- The only child is the single `Button` above, bound to the ViewModel's generated
-  `DoNothingCommand`. Do NOT add any other UI (Labels, StackLayouts, placeholder content) —
-  the developer fills in the rest themselves.
-- Keep the button free of inline style literals (no hard-coded colors, sizes, or spacing),
-  per the UI Styling Rules in CLAUDE.md.
+- `Title` binds to the ViewModel's `Title` — never a hard-coded string.
+- The single `Button` is the *only* child — don't add other UI (Labels, layouts, placeholder
+  content); the developer fills in the rest.
 
 ### Page code-behind — `src/TheDeskWatch.MobileApp/Pages/{Feature}/Pages/{Page}Page.xaml.cs`
 
@@ -104,16 +83,10 @@ public sealed partial class {Page}ViewModel : ObservableObject
 }
 ```
 
-The ViewModel:
+Two things to get right beyond what the template shows:
 
-- Is a `sealed partial` class deriving from `ObservableObject` (required for the
-  `[RelayCommand]` source generator).
-- MUST declare a constructor that assigns the `Title` property — the title shown by the page.
-  Default it to the `{Page}` name unless the user specifies a different title.
-- Exposes a `Title` property bound by the page's `Title="{Binding Title}"`.
-- Declares a single `[RelayCommand]`-attributed `DoNothing` method with an empty body. The
-  generator produces the `DoNothingCommand` property the button binds to. It intentionally
-  does nothing — the developer fills in the behavior later.
+- The constructor assigns `Title` — default it to the `{Page}` name unless the user specifies a different title.
+- The `DoNothing` `[RelayCommand]` is an intentional empty placeholder; the developer fills in the behavior later.
 
 ## Step 2 — Register in DI (`src/TheDeskWatch.MobileApp/MauiProgram.cs`)
 
@@ -147,5 +120,4 @@ Routing.RegisterRoute(nameof({Page}Page), typeof({Page}Page));
 
 ## Step 4 — Verify
 
-Run `dotnet build TheDeskWatch.slnx` and report the result. The project enforces
-`TreatWarningsAsErrors=true`, so a clean build means the scaffold is correct.
+Run `dotnet build TheDeskWatch.slnx` and report the result. A clean build means the scaffold is correct.

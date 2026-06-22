@@ -104,22 +104,14 @@ wrap the new content in a `<VerticalStackLayout>` as the root child of `<Content
 The code-behind (`{Page}Page.xaml.cs`) almost never needs changes when adding a component —
 only touch it if the component requires a specific lifecycle hook (e.g. `OnAppearing`).
 
-## Step 4 — XAML styling rules
+## Step 4 — XAML styling
 
-Every design token must come from the project's resource files — never hardcode a value.
+Follow CLAUDE.md's **UI Styling Rules** — every design token from the resource files, no inline
+literals, both light/dark variants, MAUI built-in controls before the Community Toolkit.
 
-- **Colors**: use `{AppThemeBinding Light={StaticResource X}, Dark={StaticResource Y}}` with
-  keys from `Resources/Styles/Colors.xaml` (e.g. `Primary`, `Gray500`, `OffBlack`, `White`).
-  Never use a bare color literal or a single-mode `{StaticResource}` on a color property.
-- **Named styles**: use `{StaticResource KeyName}` for keys already defined in
-  `Resources/Styles/Styles.xaml` (e.g. `Style="{StaticResource Headline}"`).
-- **Font sizes, spacing, corner radii**: if a `Style` in `Styles.xaml` already covers the
-  control type (Button, Label, Entry, etc.), rely on it implicitly — don't repeat the same
-  setters inline. Add explicit values only when deviating from the implicit style.
-- **New tokens**: if the component needs a value not in the resource files, add it there
-  with a semantic key (`{StaticResource CardCornerRadius}`), not inline.
-- **Controls**: prefer built-in MAUI controls; if none fits, use .NET MAUI Community Toolkit
-  before any other library.
+The one point specific to inserting a component into an existing layout: if a `Style` in
+`Styles.xaml` already covers the control type (Button, Label, Entry…), rely on it implicitly —
+don't repeat its setters inline. Add explicit values only when deviating from the implicit style.
 
 ## Step 5 — Scaffold ViewModel TODOs
 
@@ -137,6 +129,5 @@ Leave the ViewModel class body otherwise unchanged. The developer will fill thes
 
 ## Step 6 — Build and report
 
-Run `dotnet build TheDeskWatch.slnx` and report the result. The project enforces
-`TreatWarningsAsErrors=true`, so a clean build confirms the scaffold is correct.
-If the build fails, read the error, fix it, and rebuild before reporting.
+Run `dotnet build TheDeskWatch.slnx` and report the result. A clean build confirms the scaffold
+is correct; if it fails, read the error, fix it, and rebuild before reporting.
