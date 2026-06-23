@@ -6,9 +6,9 @@
     xmlns:local="clr-namespace:TheDeskWatch.MobileApp"
     Title="TheDeskWatch.MobileApp">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- TODO: add the first feature page here (scaffold-page skill), e.g.
+         <ShellContent Title="Home"
+                       ContentTemplate="{DataTemplate home:HomePage}"
+                       Route="Home" /> -->
 
 </Shell>
