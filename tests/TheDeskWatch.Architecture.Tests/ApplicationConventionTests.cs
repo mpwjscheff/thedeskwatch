@@ -14,8 +14,7 @@ namespace TheDeskWatch.Architecture.Tests;
 /// </summary>
 public class ApplicationConventionTests
 {
-    // Update this anchor if Class1 is replaced with a real Application type.
-    private static readonly Assembly ApplicationAssembly = typeof(TheDeskWatch.Application.Class1).Assembly;
+    private static readonly Assembly ApplicationAssembly = typeof(TheDeskWatch.Application.Features.Colleagues.Queries.GetColleaguesQuery).Assembly;
 
     private const string CommandsNamespacePattern = @"TheDeskWatch\.Application\.Features\..+\.Commands";
     private const string QueriesNamespacePattern = @"TheDeskWatch\.Application\.Features\..+\.Queries";
@@ -56,6 +55,7 @@ public class ApplicationConventionTests
             .ResideInNamespaceMatching(QueriesNamespacePattern)
             .And().DoNotHaveNameEndingWith("Handler")
             .And().DoNotHaveNameEndingWith("Response")
+            .And().DoNotHaveNameEndingWith("Dto")
             .Should().BePublic()
             .And().NotBeSealed()
             .GetResult();

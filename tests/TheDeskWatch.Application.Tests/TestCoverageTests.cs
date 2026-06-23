@@ -1,5 +1,5 @@
 using System.Reflection;
-using TheDeskWatch.Application;
+using TheDeskWatch.Application.Features.Colleagues.Queries;
 
 namespace TheDeskWatch.Application.Tests;
 
@@ -17,8 +17,7 @@ namespace TheDeskWatch.Application.Tests;
 /// </summary>
 public class TestCoverageTests
 {
-    // Update this anchor if Class1 is replaced with a real Application type.
-    private static readonly Assembly ApplicationAssembly = typeof(Class1).Assembly;
+    private static readonly Assembly ApplicationAssembly = typeof(GetColleaguesQuery).Assembly;
     private static readonly Assembly TestAssembly = typeof(TestCoverageTests).Assembly;
 
     [Fact]

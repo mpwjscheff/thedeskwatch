@@ -8,4 +8,9 @@
       <ProjectReference Include="..\TheDeskWatch.MobileApp.Contracts\TheDeskWatch.MobileApp.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="LiteBus.Queries.Abstractions" Version="5.0.0" />
+      <PackageReference Include="OneOf" Version="3.0.271" />
+    </ItemGroup>
+
 </Project>
