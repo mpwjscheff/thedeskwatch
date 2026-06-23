@@ -15,18 +15,6 @@ public sealed partial class ColleaguesPageViewModel : ObservableObject
     private readonly HexStringToColorConverter _colorConverter = new();
     private readonly Dictionary<string, int> _standUpCounts = [];
 
-    private static readonly string[] FunnyMessages =
-    [
-        "is on their feet!",
-        "defied gravity!",
-        "rising to the occasion!",
-        "up and at 'em!",
-        "standing tall!",
-        "is vertical now!",
-        "beats sitting!",
-        "joins the standing club!",
-    ];
-
     [ObservableProperty]
     private ObservableCollection<ColleagueViewModel> _colleagues = [];
 
@@ -58,7 +46,7 @@ public sealed partial class ColleaguesPageViewModel : ObservableObject
         _standUpCounts.TryGetValue(colleague.Name, out var current);
         _standUpCounts[colleague.Name] = current + 1;
 
-        var funny = FunnyMessages[Random.Shared.Next(FunnyMessages.Length)];
-        WeakReferenceMessenger.Default.Send(new StandUpToastMessage(colleague.Name, funny));
+        var firstName = colleague.Name.Split(' ')[0];
+        WeakReferenceMessenger.Default.Send(new StandUpToastMessage(firstName));
     }
 }

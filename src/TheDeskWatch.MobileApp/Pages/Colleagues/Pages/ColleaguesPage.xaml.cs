@@ -19,7 +19,7 @@ public partial class ColleaguesPage : ContentPage
 
         WeakReferenceMessenger.Default.Register<StandUpToastMessage>(this, async (_, msg) =>
             await MainThread.InvokeOnMainThreadAsync(async () =>
-                await Toast.Make($"{msg.ColleagueName} {msg.FunnyMessage}").Show()));
+                await Toast.Make($"{msg.FirstName} +1").Show()));
 
         _ = ((ColleaguesPageViewModel)BindingContext).LoadAsync();
     }
