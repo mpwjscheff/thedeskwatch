@@ -8,6 +8,7 @@ description: Use for anything under Platforms/Android or Platforms/iOS in
 tools: Read, Edit, Write, Glob, Grep, Bash
 model: sonnet
 effort: medium
+color: red
 ---
 You own native platform code for TheDeskWatch, a .NET MAUI app targeting
 Android and iOS.
