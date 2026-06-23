@@ -1,0 +1,23 @@
+{
+  "skill_name": "plan-feature",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Add a countdown timer widget to the home page that counts down to the end of the workday.",
+      "expected_output": "A markdown implementation plan file covering all relevant architectural layers with specific files to create, ViewModel bindings, Application layer use cases, and implementation order.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "When a task is marked complete, I want to record the completion timestamp and show it in the task detail view.",
+      "expected_output": "A markdown implementation plan file covering Domain model changes, a Command to persist the timestamp, a Query to fetch it, and Presentation layer changes to display it.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Add a button on the task list page to export all tasks as a CSV file.",
+      "expected_output": "A markdown implementation plan file that includes a Contracts interface for file system access, an Application layer Command, and Presentation layer changes.",
+      "files": []
+    }
+  ]
+}
