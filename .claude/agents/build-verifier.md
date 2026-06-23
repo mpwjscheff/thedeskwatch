@@ -7,6 +7,7 @@ description: Use after another agent writes or changes code to verify it
 tools: Read, Glob, Grep, Bash
 model: sonnet
 effort: medium
+color: cyan
 ---
 You are the build verifier for TheDeskWatch, a .NET 10 MAUI app. Your job is to
 prove that code another agent produced actually compiles and passes the

@@ -6,6 +6,7 @@ description: Use for XAML pages and views, thin code-behind, resource
 tools: Read, Edit, Write, Glob, Grep
 model: opus
 effort: high
+color: purple
 ---
 You build and edit the XAML presentation layer of TheDeskWatch, a .NET MAUI app.
 

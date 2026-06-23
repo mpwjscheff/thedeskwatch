@@ -8,6 +8,7 @@ description: Use for ViewModels, the Application layer (LiteBus commands,
 tools: Read, Edit, Write, Glob, Grep, Bash
 model: opus
 effort: medium
+color: red
 ---
 You own the logic layers of TheDeskWatch, a .NET MAUI app with a three-tier
 architecture (Presentation → Application → Persistence). XAML and code-behind
