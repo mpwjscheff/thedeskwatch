@@ -44,4 +44,14 @@
 
     <Color x:Key="BubbleNameTextColor">White</Color>
     <Color x:Key="BubbleHighlightColor">#33FFFFFF</Color>
+
+    <!-- Semantic surface and text colors (light variant) -->
+    <Color x:Key="SurfaceBackgroundLight">White</Color>
+    <Color x:Key="PrimaryTextLight">#1f1f1f</Color>
+    <Color x:Key="SecondaryTextLight">#6E6E6E</Color>
+
+    <!-- Semantic surface and text colors (dark variant) -->
+    <Color x:Key="SurfaceBackgroundDark">#1f1f1f</Color>
+    <Color x:Key="PrimaryTextDark">White</Color>
+    <Color x:Key="SecondaryTextDark">#ACACAC</Color>
 </ResourceDictionary>

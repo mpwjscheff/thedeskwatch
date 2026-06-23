@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using TheDeskWatch.Application.Features.Colleagues.Queries;
 using TheDeskWatch.MobileApp.Pages.Colleagues.Pages;
 using TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
+using TheDeskWatch.MobileApp.Pages.Colleagues.Views;
+using TheDeskWatch.MobileApp.Pages.Log.Pages;
+using TheDeskWatch.MobileApp.Pages.Log.ViewModels;
 using TheDeskWatch.Persistence;
 
 namespace TheDeskWatch.MobileApp;
@@ -34,8 +37,17 @@ public static class MauiProgram
                 .AddCommandModule(module => module.RegisterFromAssembly(applicationAssembly))
                 .AddQueryModule(module => module.RegisterFromAssembly(applicationAssembly)));
 
+        // Log page (renamed from old Colleagues)
+        builder.Services.AddTransient<LogPage>();
+        builder.Services.AddTransient<LogPageViewModel>();
+
+        // Colleagues list page
         builder.Services.AddTransient<ColleaguesPage>();
         builder.Services.AddTransient<ColleaguesPageViewModel>();
+
+        // Colleague form popup (singleton per session is fine, but Transient is safer)
+        builder.Services.AddTransient<ColleagueFormPopup>();
+        builder.Services.AddTransient<ColleagueFormViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();

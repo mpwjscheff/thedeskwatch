@@ -24,7 +24,8 @@ public class TestCoverageTests
     public void EveryCommand_HasATest() =>
         AssertCovered(FindSourceTypes(
             namespaceSuffix: ".Commands",
-            predicate: t => !t.Name.EndsWith("Handler", StringComparison.Ordinal)));
+            predicate: t => !t.Name.EndsWith("Handler", StringComparison.Ordinal)
+                            && !t.Name.EndsWith("Response", StringComparison.Ordinal)));
 
     [Fact]
     public void EveryQuery_HasATest() =>

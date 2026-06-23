@@ -1,3 +1,3 @@
-namespace TheDeskWatch.MobileApp.Pages.Colleagues.Messages;
+namespace TheDeskWatch.MobileApp.Pages.Log.Messages;
 
 public sealed record StandUpToastMessage(string FirstName);

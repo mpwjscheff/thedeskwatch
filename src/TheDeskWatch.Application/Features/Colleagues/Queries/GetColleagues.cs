@@ -9,7 +9,7 @@ public record GetColleaguesQuery : IQuery<OneOf<GetColleaguesResponse, ApiError>
 
 public sealed record GetColleaguesResponse(IReadOnlyList<GetColleaguesResponse.ColleagueDto> Colleagues)
 {
-    public sealed record ColleagueDto(string Name, string HexColor);
+    public sealed record ColleagueDto(int Id, string Name, string HexColor);
 }
 
 public sealed class GetColleaguesQueryHandler(IColleagueRepository repository)
@@ -24,7 +24,7 @@ public sealed class GetColleaguesQueryHandler(IColleagueRepository repository)
             var colleagues = await repository.GetAllAsync(cancellationToken);
 
             var dtos = colleagues
-                .Select(colleague => new GetColleaguesResponse.ColleagueDto(colleague.Name, colleague.HexColor))
+                .Select(colleague => new GetColleaguesResponse.ColleagueDto(colleague.Id, colleague.Name, colleague.HexColor))
                 .ToList();
 
             return new GetColleaguesResponse(dtos);

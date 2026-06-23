@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="TheDeskWatch.MobileApp.Pages.Log.Pages.LogPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:TheDeskWatch.MobileApp.Pages.Log.ViewModels"
+    xmlns:views="clr-namespace:TheDeskWatch.MobileApp.Pages.Log.Views"
+    x:DataType="vm:LogPageViewModel"
+    Title="{Binding Title}">
+    <ScrollView>
+        <CollectionView
+            ItemsSource="{Binding Colleagues}"
+            Margin="{StaticResource BubbleGridPadding}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout
+                    Orientation="Vertical"
+                    Span="2"
+                    HorizontalItemSpacing="{StaticResource BubbleGridSpacing}"
+                    VerticalItemSpacing="{StaticResource BubbleGridSpacing}" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:ColleagueViewModel">
+                    <views:ColleagueBubbleView
+                        ColleagueName="{Binding Name}"
+                        BubbleColor="{Binding BubbleColor}"
+                        TapCommand="{Binding BindingContext.RegisterStandUpCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                        TapCommandParameter="{Binding .}"
+                        HorizontalOptions="Center" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ScrollView>
+</ContentPage>

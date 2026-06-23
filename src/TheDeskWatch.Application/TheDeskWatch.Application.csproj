@@ -9,6 +9,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <InternalsVisibleTo Include="TheDeskWatch.Application.Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="LiteBus.Commands.Abstractions" Version="5.0.0" />
       <PackageReference Include="LiteBus.Queries.Abstractions" Version="5.0.0" />
       <PackageReference Include="OneOf" Version="3.0.271" />
     </ItemGroup>

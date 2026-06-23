@@ -10,8 +10,8 @@ public class GetColleaguesQueryTests
     {
         var repository = new StubColleagueRepository(
         [
-            new ColleagueRecord("Emma de Vries", "#E74C3C"),
-            new ColleagueRecord("Liam van den Berg", "#3498DB"),
+            new ColleagueRecord(1, "Emma de Vries", "#E74C3C"),
+            new ColleagueRecord(2, "Liam van den Berg", "#3498DB"),
         ]);
         var handler = new GetColleaguesQueryHandler(repository);
 
@@ -26,8 +26,8 @@ public class GetColleaguesQueryTests
     {
         var repository = new StubColleagueRepository(
         [
-            new ColleagueRecord("Emma de Vries", "#E74C3C"),
-            new ColleagueRecord("Liam van den Berg", "#3498DB"),
+            new ColleagueRecord(1, "Emma de Vries", "#E74C3C"),
+            new ColleagueRecord(2, "Liam van den Berg", "#3498DB"),
         ]);
         var handler = new GetColleaguesQueryHandler(repository);
 
@@ -67,11 +67,23 @@ public class GetColleaguesQueryTests
     {
         public Task<IReadOnlyList<ColleagueRecord>> GetAllAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult(colleagues);
+
+        public Task AddAsync(string name, string hexColor, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task UpdateAsync(int id, string name, string hexColor, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
     }
 
     private sealed class ThrowingColleagueRepository : IColleagueRepository
     {
         public Task<IReadOnlyList<ColleagueRecord>> GetAllAsync(CancellationToken cancellationToken = default) =>
+            throw new InvalidOperationException("Repository failure.");
+
+        public Task AddAsync(string name, string hexColor, CancellationToken cancellationToken = default) =>
+            throw new InvalidOperationException("Repository failure.");
+
+        public Task UpdateAsync(int id, string name, string hexColor, CancellationToken cancellationToken = default) =>
             throw new InvalidOperationException("Repository failure.");
     }
 }
