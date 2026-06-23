@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# Enforces the CLAUDE.md commit convention:
+#   <type>(<scope>): <description>.
+#   - one line only (no body/footer)
+#   - ends with a period
+#   - type ∈ feat|fix|refactor|test|chore|docs|style|perf|ci, scope optional
+#   - no AI attribution (Co-Authored-By, "Generated with", tool names)
+
+msg_file="$1"
+
+# First line = the subject; strip comment lines git adds to the template.
+subject=$(grep -vE '^#' "$msg_file" | sed '/^$/d' | head -n 1)
+
+# Let git's own auto-generated merge/revert commits through untouched.
+case "$subject" in
+    "Merge "*|"Revert "*) exit 0 ;;
+esac
+
+fail() {
+    echo "Commit blocked: $1"
+    echo "  got: $subject"
+    echo "  expected: <type>(<scope>): <description>.  (one line, ends with a period)"
+    echo "  type ∈ feat, fix, refactor, test, chore, docs, style, perf, ci"
+    exit 1
+}
+
+# Subject must match Conventional Commits and end with a period.
+pattern='^(feat|fix|refactor|test|chore|docs|style|perf|ci)(\([a-z0-9-]+\))?: .+\.$'
+echo "$subject" | grep -Eq "$pattern" || fail "subject does not match the convention."
+
+# One line only: no further non-empty, non-comment lines.
+body=$(grep -vE '^#' "$msg_file" | sed '/^$/d' | tail -n +2)
+[ -z "$body" ] || fail "commit message must be a single line (no body/footer)."
+
+# No AI attribution anywhere in the message.
+if grep -viE '^#' "$msg_file" | grep -qiE 'co-authored-by|generated with|claude|copilot|chatgpt'; then
+    fail "remove AI attribution from the commit message."
+fi
+
+exit 0
