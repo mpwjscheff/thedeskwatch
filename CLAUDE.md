@@ -27,11 +27,15 @@ git worktree remove ..\TheDeskWatch-<branch-name>; git branch -d <branch-name>  
 
 ### Specialized subagents
 
-Three project subagents live in `.claude/agents/`, each scoped to one layer. Delegate matching work to them; they enforce that layer's conventions and report back the files they changed plus any cross-layer contract the next agent must honour.
+Three project subagents live in `.claude/agents/`. **All code changes must be delegated to the appropriate subagent — never write or edit code in those tiers directly.** The main agent only reads/explores code, plans, orchestrates agents, commits, and opens PRs.
 
-- **`ui-xaml`** — XAML views, code-behind, `Resources/Styles`, value converters, and data-binding (`*.xaml` + `Resources/Styles`). Compiled bindings (`x:DataType`), tokens-only styling, no logic in code-behind.
-- **`app-logic`** — ViewModels, services, models, DI registration, and Shell navigation (`ViewModels/`, `Services/`, `Models/`, `MauiProgram.cs`). MVVM source generators, services behind interfaces, native calls kept behind an interface.
-- **`platform-native`** — everything under `Platforms/Android` and `Platforms/iOS`: permissions, `AndroidManifest.xml`, `Info.plist`, handlers, native interop, and platform service implementations of the interfaces `app-logic` defines.
+| Agent | Owns | When to use |
+|---|---|---|
+| **`maui`** | `MobileApp/` — XAML, code-behind, ViewModels, `Services/`, `Helpers/`, `Resources/Styles/`, `MauiProgram.cs`, `AppShell.xaml.cs`, `Platforms/` | Any presentation-layer change |
+| **`backend`** | `Application/` (Commands, Queries, Feature Services) and `MobileApp.Contracts/` | Any business logic or platform-capability interface change |
+| **`build-verifier`** | Read-only: runs `dotnet build` + `dotnet test`, maps failures to the responsible agent | Always run last after any code change |
+
+For cross-tier features, delegate to both agents in parallel when independent; run `backend` first when it must define a contract `maui` depends on. Route `build-verifier` failures back to the responsible agent. `Domain/` and `Persistence/` have no dedicated agent — the main agent may edit them directly, then still runs `build-verifier`.
 
 ## First-time setup
 

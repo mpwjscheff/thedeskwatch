@@ -43,7 +43,7 @@ Reporting:
   unit test). Quote the real compiler/test output — do not paraphrase a rule
   from memory.
 - Map each failure to the responsible layer so the fix can be routed:
-  app-logic, ui-xaml, or platform-native. Do not fix it yourself.
+  backend, maui. Do not fix it yourself.
 - If something could not be verified (e.g. a platform-only build that did not
   run, or missing test coverage), say so explicitly rather than implying PASS.
 
