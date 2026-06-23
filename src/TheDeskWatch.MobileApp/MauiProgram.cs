@@ -4,9 +4,9 @@ using LiteBus.Extensions.Microsoft.DependencyInjection;
 using LiteBus.Queries;
 using Microsoft.Extensions.Logging;
 using TheDeskWatch.Application.Features.Colleagues.Queries;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 using TheDeskWatch.MobileApp.Pages.Colleagues.Pages;
 using TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
-using TheDeskWatch.MobileApp.Pages.Colleagues.Views;
 using TheDeskWatch.MobileApp.Pages.Log.Pages;
 using TheDeskWatch.MobileApp.Pages.Log.ViewModels;
 using TheDeskWatch.Persistence;
@@ -21,6 +21,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
+            .UseSkiaSharp()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -45,9 +46,9 @@ public static class MauiProgram
         builder.Services.AddTransient<ColleaguesPage>();
         builder.Services.AddTransient<ColleaguesPageViewModel>();
 
-        // Colleague form popup (singleton per session is fine, but Transient is safer)
-        builder.Services.AddTransient<ColleagueFormPopup>();
-        builder.Services.AddTransient<ColleagueFormViewModel>();
+        // Colleague detail page (shown as a swipe-to-dismiss modal)
+        builder.Services.AddTransient<ColleagueDetailPage>();
+        builder.Services.AddTransient<ColleagueDetailPageViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();

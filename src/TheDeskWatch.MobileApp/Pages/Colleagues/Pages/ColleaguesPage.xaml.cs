@@ -1,19 +1,16 @@
-using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Extensions;
 using TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
-using TheDeskWatch.MobileApp.Pages.Colleagues.Views;
 
 namespace TheDeskWatch.MobileApp.Pages.Colleagues.Pages;
 
 public partial class ColleaguesPage : ContentPage
 {
     private readonly ColleaguesPageViewModel _viewModel;
-    private readonly ColleagueFormPopup _formPopup;
+    private readonly ColleagueDetailPage _detailPage;
 
-    public ColleaguesPage(ColleaguesPageViewModel viewModel, ColleagueFormPopup formPopup)
+    public ColleaguesPage(ColleaguesPageViewModel viewModel, ColleagueDetailPage detailPage)
     {
         _viewModel = viewModel;
-        _formPopup = formPopup;
+        _detailPage = detailPage;
         BindingContext = viewModel;
         InitializeComponent();
     }
@@ -26,8 +23,8 @@ public partial class ColleaguesPage : ContentPage
 
     private async void OnAddTapped(object? sender, EventArgs e)
     {
-        _formPopup.PrepareForAdd();
-        await this.ShowPopupAsync(_formPopup, PopupOptions.Empty);
+        _detailPage.PrepareForAdd();
+        await Navigation.PushModalAsync(new NavigationPage(_detailPage));
         await _viewModel.LoadAsync();
     }
 
@@ -44,8 +41,8 @@ public partial class ColleaguesPage : ContentPage
             collectionView.SelectedItem = null;
         }
 
-        _formPopup.PrepareForEdit(item.Id, item.Name, item.HexColor);
-        await this.ShowPopupAsync(_formPopup, PopupOptions.Empty);
+        _detailPage.PrepareForEdit(item.Id, item.Name, item.HexColor);
+        await Navigation.PushModalAsync(new NavigationPage(_detailPage));
         await _viewModel.LoadAsync();
     }
 }

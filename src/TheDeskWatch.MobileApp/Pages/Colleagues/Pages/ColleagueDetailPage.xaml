@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="TheDeskWatch.MobileApp.Pages.Colleagues.Pages.ColleagueDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels"
+    xmlns:picker="clr-namespace:Maui.ColorPicker;assembly=Maui.ColorPicker"
+    x:DataType="vm:ColleagueDetailPageViewModel"
+    Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel" Clicked="OnCancelTapped" Order="Primary" Priority="0" />
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" Order="Primary" Priority="1" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource PopupContentPadding}" Spacing="{StaticResource PopupContentSpacing}">
+
+            <Label Text="Full Name" Style="{StaticResource SecondaryText}" />
+            <Entry
+                Text="{Binding Name}"
+                Placeholder="e.g. Jane Smith"
+                ReturnType="Done"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Label Text="Colour" Style="{StaticResource SecondaryText}" />
+            <picker:ColorPicker
+                PickedColor="{Binding PickedColor, Mode=TwoWay}"
+                HeightRequest="{StaticResource ColorPickerHeight}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
