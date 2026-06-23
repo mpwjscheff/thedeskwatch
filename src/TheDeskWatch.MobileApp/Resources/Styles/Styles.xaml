@@ -436,6 +436,7 @@
     <x:Double x:Key="BubbleGridSpacing">16</x:Double>
     <Thickness x:Key="BubbleGridPadding">20,36,20,20</Thickness>
     <x:Double x:Key="BubbleShadowRadius">5</x:Double>
+    <x:Double x:Key="BubblePadding">12</x:Double>
     <x:Double x:Key="BubbleHighlightSize">40</x:Double>
     <Thickness x:Key="BubbleNamePadding">8,0</Thickness>
     <Thickness x:Key="BubbleHighlightMargin">15,10,0,0</Thickness>
