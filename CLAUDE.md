@@ -25,6 +25,14 @@ git worktree add ..\TheDeskWatch-<branch-name> -b <branch-name>  # create (from 
 git worktree remove ..\TheDeskWatch-<branch-name>; git branch -d <branch-name>  # clean up after merge
 ```
 
+### Specialized subagents
+
+Three project subagents live in `.claude/agents/`, each scoped to one layer. Delegate matching work to them; they enforce that layer's conventions and report back the files they changed plus any cross-layer contract the next agent must honour.
+
+- **`ui-xaml`** — XAML views, code-behind, `Resources/Styles`, value converters, and data-binding (`*.xaml` + `Resources/Styles`). Compiled bindings (`x:DataType`), tokens-only styling, no logic in code-behind.
+- **`app-logic`** — ViewModels, services, models, DI registration, and Shell navigation (`ViewModels/`, `Services/`, `Models/`, `MauiProgram.cs`). MVVM source generators, services behind interfaces, native calls kept behind an interface.
+- **`platform-native`** — everything under `Platforms/Android` and `Platforms/iOS`: permissions, `AndroidManifest.xml`, `Info.plist`, handlers, native interop, and platform service implementations of the interfaces `app-logic` defines.
+
 ## First-time setup
 
 After cloning, point git at the project hooks so every commit first compiles the solution and runs the unit tests:

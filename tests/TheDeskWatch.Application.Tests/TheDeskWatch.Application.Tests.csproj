@@ -16,4 +16,8 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\TheDeskWatch.Application\TheDeskWatch.Application.csproj"/>
+    </ItemGroup>
+
 </Project>

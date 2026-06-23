@@ -3,7 +3,11 @@
     "allow": [
       "Bash(Get-ChildItem -Path \"D:\\\\Projects\\\\TheDeskWatch\" -Force)",
       "Bash(Select-Object FullName, PSIsContainer)",
-      "Bash(Format-Table -AutoSize)"
+      "Bash(Format-Table -AutoSize)",
+      "Bash(find Pages -maxdepth 3 -type d)",
+      "Bash(ls Services)",
+      "Bash(ls Helpers)",
+      "Bash(ls Platforms)"
     ]
   }
 }

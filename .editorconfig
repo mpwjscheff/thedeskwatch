@@ -1,0 +1,7 @@
+root = true
+
+[*.cs]
+# CLAUDE.md: every `using` directive goes above the namespace, never inside it.
+# Escalated to a build error (see EnforceCodeStyleInBuild in Directory.Build.props).
+csharp_using_directive_placement = outside_namespace
+dotnet_diagnostic.IDE0065.severity = error
