@@ -94,15 +94,16 @@ Pages/Home/
 
 ViewModels use [`CommunityToolkit.Mvvm`](https://learn.microsoft.com/dotnet/communitytoolkit/mvvm/) — the standard for the presentation layer. Never hand-roll `INotifyPropertyChanged`, `ICommand`, or `Command`.
 
+- **Naming**: a ViewModel backing a `Page` uses the `PageViewModel` postfix (e.g. `HomePageViewModel`); a ViewModel backing a reusable `View` (`ContentView`, `DataTemplate`) uses the plain `ViewModel` postfix (e.g. `ClockWidgetViewModel`).
 - Derive every ViewModel from `ObservableObject` and declare it `partial` (the toolkit's source generators require it).
 - Expose bindable state with `[ObservableProperty]` on a `private` backing field.
 - Define commands with `[RelayCommand]` on a method; bind to the generated `{Method}Command` property.
 - A ViewModel defines a constructor that sets its page `Title`; the page binds `Title="{Binding Title}"` rather than hard-coding a string.
 
 ```csharp
-public sealed partial class HomeViewModel : ObservableObject
+public sealed partial class HomePageViewModel : ObservableObject
 {
-    public HomeViewModel() => Title = "Home";
+    public HomePageViewModel() => Title = "Home";
 
     public string Title { get; }
 
