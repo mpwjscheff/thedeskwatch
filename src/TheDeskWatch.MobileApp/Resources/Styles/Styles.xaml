@@ -447,10 +447,8 @@
     <x:Double x:Key="PopupCornerRadius">16</x:Double>
     <Thickness x:Key="PopupContentPadding">24,20,24,40</Thickness>
     <x:Double x:Key="PopupContentSpacing">20</x:Double>
-    <x:Double x:Key="SwatchSize">36</x:Double>
-    <x:Double x:Key="SwatchStripHeight">48</x:Double>
-    <x:Double x:Key="SwatchSpacing">10</x:Double>
     <x:Double x:Key="PopupMinimumWidth">300</x:Double>
+    <x:Double x:Key="ColorPickerHeight">260</x:Double>
 
     <x:Double x:Key="BubbleSize">120</x:Double>
     <x:Double x:Key="BubbleFontSize">13</x:Double>
