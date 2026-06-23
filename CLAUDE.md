@@ -156,7 +156,7 @@ Logic shared across commands/queries goes in `Features/{Feature}/Services/`: def
 
 - Nullable reference types are enabled everywhere — annotate accordingly.
 - `<ImplicitUsings>enable</ImplicitUsings>` is on; common namespaces need no explicit `using`.
-- Place every `using` directive at the top of the file, outside (above) the namespace declaration — never inside the namespace block.
+- Place every `using` directive inside (under) the namespace declaration — never above/outside the namespace block.
 - Prefer abstraction over direct framework calls: if a concern (alerts, navigation, permissions, …) is used in more than one place, introduce a service and inject it — Contracts implementations in `Services/`, internal MAUI abstractions in `Helpers/`, infrastructure concerns the same way inside `Application`.
 
 ## UI Styling Rules
