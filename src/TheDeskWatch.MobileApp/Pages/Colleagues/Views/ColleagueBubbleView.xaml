@@ -17,7 +17,7 @@
         StrokeThickness="0"
         BackgroundColor="{Binding BubbleColor, Source={RelativeSource AncestorType={x:Type local:ColleagueBubbleView}}}">
         <Border.Shadow>
-            <Shadow />
+            <Shadow Radius="{StaticResource BubbleShadowRadius}" />
         </Border.Shadow>
         <Grid>
             <Label
