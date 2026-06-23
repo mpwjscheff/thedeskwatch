@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\TheDeskWatch.Domain\TheDeskWatch.Domain.csproj" />
+        <ProjectReference Include="..\TheDeskWatch.MobileApp.Contracts\TheDeskWatch.MobileApp.Contracts.csproj" />
     </ItemGroup>
 
 </Project>
