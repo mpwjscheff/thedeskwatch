@@ -1,0 +1,87 @@
+{
+  "skill_name": "scaffold-entity",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Add a Note entity to the database. It should have a required Title (string) and an optional Body (string?) property.",
+      "expected_output": "Domain entity Note.cs created, EF configuration NoteConfiguration.cs created, DbSet<Note> Notes added to DeskWatchDbContext, INoteRepository interface created, NoteRepository implementation created, AddScoped registration added in ServiceCollectionExtensions, dotnet build passes.",
+      "files": [],
+      "expectations": [
+        "Build passes with 0 errors",
+        "Domain entity file exists",
+        "Domain entity is sealed",
+        "Domain entity has int Id property",
+        "Domain entity has no EF Core data annotations",
+        "Using directives are outside (before) namespace in entity file",
+        "EF Core configuration file exists",
+        "EF config implements IEntityTypeConfiguration",
+        "EF config is internal sealed",
+        "Repository interface file exists",
+        "Repository interface is public",
+        "Repository interface has DeleteAsync(int id)",
+        "Repository implementation file exists",
+        "Repository impl is internal sealed",
+        "Repository impl uses primary constructor",
+        "DeskWatchDbContext has DbSet property",
+        "DeskWatchDbContext has DbSet<Note>",
+        "ServiceCollectionExtensions has scoped repository registration",
+        "INoteRepository registered as scoped"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "I want to track work sessions in the app. Scaffold a TimerEntry entity with a required Description (string), a StartedAt (DateTimeOffset), and an optional EndedAt (DateTimeOffset?).",
+      "expected_output": "Domain entity TimerEntry.cs created, EF configuration TimerEntryConfiguration.cs created, DbSet<TimerEntry> TimerEntries added to DeskWatchDbContext, ITimerEntryRepository interface created, TimerEntryRepository implementation created, AddScoped registration added in ServiceCollectionExtensions, dotnet build passes.",
+      "files": [],
+      "expectations": [
+        "Build passes with 0 errors",
+        "Domain entity file exists",
+        "Domain entity is sealed",
+        "Domain entity has int Id property",
+        "Domain entity has no EF Core data annotations",
+        "Using directives are outside (before) namespace in entity file",
+        "EF Core configuration file exists",
+        "EF config implements IEntityTypeConfiguration",
+        "EF config is internal sealed",
+        "Repository interface file exists",
+        "Repository interface is public",
+        "Repository interface has DeleteAsync(int id)",
+        "Repository implementation file exists",
+        "Repository impl is internal sealed",
+        "Repository impl uses primary constructor",
+        "DeskWatchDbContext has DbSet property",
+        "DeskWatchDbContext has DbSet<TimerEntry>",
+        "ServiceCollectionExtensions has scoped repository registration",
+        "ITimerEntryRepository registered as scoped"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create a Tag entity with a single required Name property (string, max 50 chars) and an IsActive bool.",
+      "expected_output": "Domain entity Tag.cs created, EF configuration TagConfiguration.cs with HasMaxLength(50) on Name, DbSet<Tag> Tags added to DeskWatchDbContext, ITagRepository interface created, TagRepository implementation created, AddScoped registration added in ServiceCollectionExtensions, dotnet build passes.",
+      "files": [],
+      "expectations": [
+        "Build passes with 0 errors",
+        "Domain entity file exists",
+        "Domain entity is sealed",
+        "Domain entity has int Id property",
+        "Domain entity has no EF Core data annotations",
+        "Using directives are outside (before) namespace in entity file",
+        "EF Core configuration file exists",
+        "EF config implements IEntityTypeConfiguration",
+        "EF config is internal sealed",
+        "Repository interface file exists",
+        "Repository interface is public",
+        "Repository interface has DeleteAsync(int id)",
+        "Repository implementation file exists",
+        "Repository impl is internal sealed",
+        "Repository impl uses primary constructor",
+        "DeskWatchDbContext has DbSet property",
+        "DeskWatchDbContext has DbSet<Tag>",
+        "ServiceCollectionExtensions has scoped repository registration",
+        "ITagRepository registered as scoped",
+        "EF configuration uses HasMaxLength(50) on Name"
+      ]
+    }
+  ]
+}
