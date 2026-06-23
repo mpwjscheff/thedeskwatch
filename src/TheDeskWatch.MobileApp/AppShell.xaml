@@ -3,7 +3,8 @@
     x:Class="TheDeskWatch.MobileApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:pages="clr-namespace:TheDeskWatch.MobileApp.Pages.Colleagues.Pages"
+    xmlns:colleaguesPages="clr-namespace:TheDeskWatch.MobileApp.Pages.Colleagues.Pages"
+    xmlns:logPages="clr-namespace:TheDeskWatch.MobileApp.Pages.Log.Pages"
     Title="TheDeskWatch">
 
     <TabBar>
@@ -16,8 +17,20 @@
                     Color="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
             </Tab.Icon>
             <ShellContent
-                ContentTemplate="{DataTemplate pages:ColleaguesPage}"
+                ContentTemplate="{DataTemplate colleaguesPages:ColleaguesPage}"
                 Route="Colleagues" />
+        </Tab>
+        <Tab Title="Log">
+            <Tab.Icon>
+                <FontImageSource
+                    FontFamily="FontAwesome6Solid"
+                    Glyph="&#xf017;"
+                    Size="22"
+                    Color="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+            </Tab.Icon>
+            <ShellContent
+                ContentTemplate="{DataTemplate logPages:LogPage}"
+                Route="Log" />
         </Tab>
     </TabBar>
 

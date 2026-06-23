@@ -1,14 +1,19 @@
-using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Mvvm.Messaging;
-using TheDeskWatch.MobileApp.Pages.Colleagues.Messages;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
 using TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
+using TheDeskWatch.MobileApp.Pages.Colleagues.Views;
 
 namespace TheDeskWatch.MobileApp.Pages.Colleagues.Pages;
 
 public partial class ColleaguesPage : ContentPage
 {
-    public ColleaguesPage(ColleaguesPageViewModel viewModel)
+    private readonly ColleaguesPageViewModel _viewModel;
+    private readonly ColleagueFormPopup _formPopup;
+
+    public ColleaguesPage(ColleaguesPageViewModel viewModel, ColleagueFormPopup formPopup)
     {
+        _viewModel = viewModel;
+        _formPopup = formPopup;
         BindingContext = viewModel;
         InitializeComponent();
     }
@@ -16,17 +21,31 @@ public partial class ColleaguesPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
-        WeakReferenceMessenger.Default.Register<StandUpToastMessage>(this, async (_, msg) =>
-            await MainThread.InvokeOnMainThreadAsync(async () =>
-                await Toast.Make($"{msg.FirstName} +1").Show()));
-
-        _ = ((ColleaguesPageViewModel)BindingContext).LoadAsync();
+        _ = _viewModel.LoadAsync();
     }
 
-    protected override void OnDisappearing()
+    private async void OnAddTapped(object? sender, EventArgs e)
     {
-        base.OnDisappearing();
-        WeakReferenceMessenger.Default.Unregister<StandUpToastMessage>(this);
+        _formPopup.PrepareForAdd();
+        await this.ShowPopupAsync(_formPopup, PopupOptions.Empty);
+        await _viewModel.LoadAsync();
+    }
+
+    private async void OnColleagueSelected(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.Count == 0 ||
+            e.CurrentSelection[0] is not ColleagueListItemViewModel item)
+        {
+            return;
+        }
+
+        if (sender is CollectionView collectionView)
+        {
+            collectionView.SelectedItem = null;
+        }
+
+        _formPopup.PrepareForEdit(item.Id, item.Name, item.HexColor);
+        await this.ShowPopupAsync(_formPopup, PopupOptions.Empty);
+        await _viewModel.LoadAsync();
     }
 }

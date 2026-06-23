@@ -1,0 +1,50 @@
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using LiteBus.Queries.Abstractions;
+using TheDeskWatch.Application.Features.Colleagues.Queries;
+using TheDeskWatch.MobileApp.Converters;
+using TheDeskWatch.MobileApp.Pages.Log.Messages;
+
+namespace TheDeskWatch.MobileApp.Pages.Log.ViewModels;
+
+public sealed partial class LogPageViewModel : ObservableObject
+{
+    private readonly IQueryMediator _queryMediator;
+    private readonly HexStringToColorConverter _colorConverter = new();
+    private readonly Dictionary<string, int> _standUpCounts = [];
+
+    [ObservableProperty]
+    private ObservableCollection<ColleagueViewModel> _colleagues = [];
+
+    public LogPageViewModel(IQueryMediator queryMediator)
+    {
+        _queryMediator = queryMediator;
+    }
+
+    public string Title { get; } = "Log";
+
+    public async Task LoadAsync()
+    {
+        var result = await _queryMediator.QueryAsync(new GetColleaguesQuery());
+        result.Switch(
+            response =>
+            {
+                Colleagues = new ObservableCollection<ColleagueViewModel>(
+                    response.Colleagues.Select(dto => new ColleagueViewModel(
+                        dto.Name,
+                        (Color)(_colorConverter.Convert(dto.HexColor, typeof(Color), null, null) ?? Colors.Gray))));
+            },
+            _ => { });
+    }
+
+    [RelayCommand]
+    private void RegisterStandUp(ColleagueViewModel colleague)
+    {
+        _standUpCounts.TryGetValue(colleague.Name, out var current);
+        _standUpCounts[colleague.Name] = current + 1;
+        var firstName = colleague.Name.Split(' ')[0];
+        WeakReferenceMessenger.Default.Send(new StandUpToastMessage(firstName));
+    }
+}

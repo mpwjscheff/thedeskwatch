@@ -1,52 +1,37 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 using TheDeskWatch.Application.Features.Colleagues.Queries;
-using TheDeskWatch.MobileApp.Converters;
-using TheDeskWatch.MobileApp.Pages.Colleagues.Messages;
 
 namespace TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
 
 public sealed partial class ColleaguesPageViewModel : ObservableObject
 {
     private readonly IQueryMediator _queryMediator;
-    private readonly HexStringToColorConverter _colorConverter = new();
-    private readonly Dictionary<string, int> _standUpCounts = [];
+    private readonly ICommandMediator _commandMediator;
 
     [ObservableProperty]
-    private ObservableCollection<ColleagueViewModel> _colleagues = [];
+    private ObservableCollection<ColleagueListItemViewModel> _colleagues = [];
 
-    public ColleaguesPageViewModel(IQueryMediator queryMediator)
+    public ColleaguesPageViewModel(IQueryMediator queryMediator, ICommandMediator commandMediator)
     {
         _queryMediator = queryMediator;
+        _commandMediator = commandMediator;
+        Title = "Colleagues";
     }
 
-    public string Title { get; } = "Colleagues";
+    public string Title { get; }
 
     public async Task LoadAsync()
     {
         var result = await _queryMediator.QueryAsync(new GetColleaguesQuery());
-
         result.Switch(
             response =>
             {
-                Colleagues = new ObservableCollection<ColleagueViewModel>(
-                    response.Colleagues.Select(dto => new ColleagueViewModel(
-                        dto.Name,
-                        (Color)(_colorConverter.Convert(dto.HexColor, typeof(Color), null, null) ?? Colors.Gray))));
+                Colleagues = new ObservableCollection<ColleagueListItemViewModel>(
+                    response.Colleagues.Select(dto => new ColleagueListItemViewModel(dto.Id, dto.Name, dto.HexColor)));
             },
             _ => { });
-    }
-
-    [RelayCommand]
-    private void RegisterStandUp(ColleagueViewModel colleague)
-    {
-        _standUpCounts.TryGetValue(colleague.Name, out var current);
-        _standUpCounts[colleague.Name] = current + 1;
-
-        var firstName = colleague.Name.Split(' ')[0];
-        WeakReferenceMessenger.Default.Send(new StandUpToastMessage(firstName));
     }
 }
