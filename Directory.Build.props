@@ -5,6 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <!-- Run IDE-prefixed style analyzers (e.g. IDE0065 using-placement) during build,
+         not just in the IDE. Only rules set to warning/error in .editorconfig fail the
+         build; the defaults stay at suggestion/silent and do not. -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
 </Project>
