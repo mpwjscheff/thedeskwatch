@@ -186,6 +186,8 @@
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
 
+    <x:Double x:Key="SmallBodyFontSize">13</x:Double>
+
     <!-- Semantic, purpose-based label styles -->
     <Style TargetType="Label" x:Key="PrimaryText">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextLight}, Dark={StaticResource PrimaryTextDark}}" />
@@ -441,7 +443,6 @@
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 
-    <x:Double x:Key="SmallBodyFontSize">13</x:Double>
     <Thickness x:Key="ListRowPadding">20,14</Thickness>
     <x:Double x:Key="PopupCornerRadius">16</x:Double>
     <Thickness x:Key="PopupContentPadding">24,20,24,40</Thickness>
