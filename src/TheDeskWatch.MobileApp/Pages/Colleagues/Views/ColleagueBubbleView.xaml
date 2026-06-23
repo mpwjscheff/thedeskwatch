@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="TheDeskWatch.MobileApp.Pages.Colleagues.Views.ColleagueBubbleView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:TheDeskWatch.MobileApp.Pages.Colleagues.Views"
+    x:DataType="local:ColleagueBubbleView"
+    WidthRequest="{StaticResource BubbleSize}"
+    HeightRequest="{StaticResource BubbleSize}">
+
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer Tapped="OnTapped" />
+    </ContentView.GestureRecognizers>
+
+    <Border
+        StrokeShape="Ellipse"
+        StrokeThickness="0"
+        BackgroundColor="{Binding BubbleColor, Source={RelativeSource AncestorType={x:Type local:ColleagueBubbleView}}}">
+        <Border.Shadow>
+            <Shadow />
+        </Border.Shadow>
+        <Grid>
+            <Label
+                Text="{Binding ColleagueName, Source={RelativeSource AncestorType={x:Type local:ColleagueBubbleView}}}"
+                TextColor="{StaticResource BubbleNameTextColor}"
+                FontSize="{StaticResource BubbleFontSize}"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                LineBreakMode="TailTruncation"
+                Padding="{StaticResource BubbleNamePadding}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+            <Border
+                StrokeShape="Ellipse"
+                StrokeThickness="0"
+                WidthRequest="{StaticResource BubbleHighlightSize}"
+                HeightRequest="{StaticResource BubbleHighlightSize}"
+                HorizontalOptions="Start"
+                VerticalOptions="Start"
+                Margin="{StaticResource BubbleHighlightMargin}"
+                InputTransparent="True"
+                BackgroundColor="{StaticResource BubbleHighlightColor}" />
+        </Grid>
+    </Border>
+
+</ContentView>

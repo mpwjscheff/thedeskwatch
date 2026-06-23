@@ -20,7 +20,7 @@ namespace TheDeskWatch.Architecture.Tests;
 public class LayerDependencyTests
 {
     // Update these anchors if the placeholder types are replaced.
-    private static readonly Assembly ApplicationAssembly = typeof(TheDeskWatch.Application.Class1).Assembly;
+    private static readonly Assembly ApplicationAssembly = typeof(TheDeskWatch.Application.Features.Colleagues.Queries.GetColleaguesQuery).Assembly;
     private static readonly Assembly DomainAssembly = typeof(TheDeskWatch.Domain.Class1).Assembly;
     private static readonly Assembly PersistenceAssembly = typeof(TheDeskWatch.Persistence.ServiceCollectionExtensions).Assembly;
 

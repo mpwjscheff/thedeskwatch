@@ -3,12 +3,22 @@
     x:Class="TheDeskWatch.MobileApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:TheDeskWatch.MobileApp"
-    Title="TheDeskWatch.MobileApp">
+    xmlns:pages="clr-namespace:TheDeskWatch.MobileApp.Pages.Colleagues.Pages"
+    Title="TheDeskWatch">
 
-    <!-- TODO: add the first feature page here (scaffold-page skill), e.g.
-         <ShellContent Title="Home"
-                       ContentTemplate="{DataTemplate home:HomePage}"
-                       Route="Home" /> -->
+    <TabBar>
+        <Tab Title="Colleagues">
+            <Tab.Icon>
+                <FontImageSource
+                    FontFamily="FontAwesome6Solid"
+                    Glyph="&#xf0c0;"
+                    Size="22"
+                    Color="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+            </Tab.Icon>
+            <ShellContent
+                ContentTemplate="{DataTemplate pages:ColleaguesPage}"
+                Route="Colleagues" />
+        </Tab>
+    </TabBar>
 
 </Shell>
