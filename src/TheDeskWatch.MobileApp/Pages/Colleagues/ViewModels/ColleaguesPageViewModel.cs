@@ -1,9 +1,11 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using LiteBus.Queries.Abstractions;
 using TheDeskWatch.Application.Features.Colleagues.Queries;
 using TheDeskWatch.MobileApp.Converters;
+using TheDeskWatch.MobileApp.Pages.Colleagues.Messages;
 
 namespace TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
 
@@ -12,6 +14,18 @@ public sealed partial class ColleaguesPageViewModel : ObservableObject
     private readonly IQueryMediator _queryMediator;
     private readonly HexStringToColorConverter _colorConverter = new();
     private readonly Dictionary<string, int> _standUpCounts = [];
+
+    private static readonly string[] FunnyMessages =
+    [
+        "is on their feet!",
+        "defied gravity!",
+        "rising to the occasion!",
+        "up and at 'em!",
+        "standing tall!",
+        "is vertical now!",
+        "beats sitting!",
+        "joins the standing club!",
+    ];
 
     [ObservableProperty]
     private ObservableCollection<ColleagueViewModel> _colleagues = [];
@@ -43,5 +57,8 @@ public sealed partial class ColleaguesPageViewModel : ObservableObject
     {
         _standUpCounts.TryGetValue(colleague.Name, out var current);
         _standUpCounts[colleague.Name] = current + 1;
+
+        var funny = FunnyMessages[Random.Shared.Next(FunnyMessages.Length)];
+        WeakReferenceMessenger.Default.Send(new StandUpToastMessage(colleague.Name, funny));
     }
 }
