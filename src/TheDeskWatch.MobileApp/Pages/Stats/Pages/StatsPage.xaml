@@ -113,6 +113,37 @@
                 </VerticalStackLayout>
             </Border>
 
+            <!-- Card 4: Last Week's Departures -->
+            <Border Style="{StaticResource StatsCard}">
+                <VerticalStackLayout Spacing="{StaticResource StatsCardSpacing}">
+                    <Label
+                        Text="Mon-Flee to Fri-flee"
+                        Style="{StaticResource StatsCardTitle}" />
+                    <charts:SfCartesianChart
+                        HeightRequest="{StaticResource StatsChartHeight}">
+                        <charts:SfCartesianChart.XAxes>
+                            <charts:CategoryAxis />
+                        </charts:SfCartesianChart.XAxes>
+                        <charts:SfCartesianChart.YAxes>
+                            <charts:NumericalAxis />
+                        </charts:SfCartesianChart.YAxes>
+                        <charts:LineSeries
+                            ItemsSource="{Binding WeeklyDepartureChartData}"
+                            XBindingPath="Label"
+                            YBindingPath="Value"
+                            ShowDataLabels="True" />
+                    </charts:SfCartesianChart>
+                    <HorizontalStackLayout Spacing="{StaticResource StatsCaptionSpacing}">
+                        <Label
+                            Text="&#xf073;"
+                            Style="{StaticResource StatsCaptionGlyph}" />
+                        <Label
+                            Text="Mon to Fri, previous week"
+                            Style="{StaticResource StatsCaptionText}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
             <Label
                 Text="{Binding ErrorMessage}"
                 Style="{StaticResource StatsCaptionText}" />
