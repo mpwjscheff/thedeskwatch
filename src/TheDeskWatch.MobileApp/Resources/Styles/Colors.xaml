@@ -54,4 +54,7 @@
     <Color x:Key="SurfaceBackgroundDark">#1f1f1f</Color>
     <Color x:Key="PrimaryTextDark">White</Color>
     <Color x:Key="SecondaryTextDark">#ACACAC</Color>
+
+    <Color x:Key="WelcomeBackgroundLight">#F5EFE0</Color>
+    <Color x:Key="WelcomeBackgroundDark">#2A2520</Color>
 </ResourceDictionary>

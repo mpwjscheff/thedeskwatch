@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TheDeskWatch.MobileApp.Pages.Welcome.ViewModels"
+             x:Class="TheDeskWatch.MobileApp.Pages.Welcome.Pages.WelcomePage"
+             x:DataType="vm:WelcomePageViewModel"
+             Title="{Binding Title}"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{AppThemeBinding Light={StaticResource WelcomeBackgroundLight}, Dark={StaticResource WelcomeBackgroundDark}}">
+
+    <VerticalStackLayout VerticalOptions="Center"
+                         HorizontalOptions="Center"
+                         Spacing="40"
+                         Padding="40,0">
+
+        <Image Source="logo.png"
+               WidthRequest="260"
+               Aspect="AspectFit"
+               HorizontalOptions="Center" />
+
+        <Button Text="Get started"
+                Command="{Binding GetStartedCommand}"
+                HorizontalOptions="Center"
+                WidthRequest="200" />
+
+    </VerticalStackLayout>
+
+</ContentPage>
