@@ -117,7 +117,7 @@
             <Border Style="{StaticResource StatsCard}">
                 <VerticalStackLayout Spacing="{StaticResource StatsCardSpacing}">
                     <Label
-                        Text="Last Week's Departures"
+                        Text="Mon-Flee to Fri-flee"
                         Style="{StaticResource StatsCardTitle}" />
                     <charts:SfCartesianChart
                         HeightRequest="{StaticResource StatsChartHeight}">
