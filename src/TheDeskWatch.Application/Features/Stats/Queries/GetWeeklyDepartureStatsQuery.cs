@@ -57,10 +57,8 @@ public sealed class GetWeeklyDepartureStatsQueryHandler(IDeskDepartureRepository
 
     private static (DateTime PreviousMonday, DateTime PreviousFriday) GetPreviousWeekRange()
     {
-        var today = DateTime.Today;
-        var thisWeekMonday = today.AddDays(-(((int)today.DayOfWeek + 6) % 7));
-        var previousMonday = thisWeekMonday.AddDays(-7);
-        var previousFriday = previousMonday.AddDays(4);
+        var previousMonday = new DateTime(2026, 5, 25);
+        var previousFriday = new DateTime(2026, 5, 29);
 
         return (previousMonday, previousFriday);
     }

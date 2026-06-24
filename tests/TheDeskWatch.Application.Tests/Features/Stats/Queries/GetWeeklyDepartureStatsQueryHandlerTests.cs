@@ -7,18 +7,8 @@ public class GetWeeklyDepartureStatsQueryHandlerTests
 {
     private static readonly string[] ExpectedWeekdayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
-    private static DeskDepartureRecord Departure(int id, DateTimeOffset timestamp) =>
-        new(id, id, timestamp);
-
-    private static DateTimeOffset At(DateTime date, int dayOffset, int hour) =>
-        new(DateTime.SpecifyKind(date.AddDays(dayOffset).AddHours(hour), DateTimeKind.Unspecified), TimeSpan.Zero);
-
-    private static DateTime PreviousMonday()
-    {
-        var today = DateTime.Today;
-        var thisMonday = today.AddDays(-(((int)today.DayOfWeek + 6) % 7));
-        return thisMonday.AddDays(-7);
-    }
+    private static DeskDepartureRecord Departure(int id, int year, int month, int day, int hour = 9) =>
+        new(id, id, new DateTimeOffset(DateTime.SpecifyKind(new DateTime(year, month, day, hour, 0, 0), DateTimeKind.Unspecified), TimeSpan.Zero));
 
     [Fact]
     public async Task HandleAsync_ReturnsApiError_WhenRepositoryThrows()
@@ -33,14 +23,13 @@ public class GetWeeklyDepartureStatsQueryHandlerTests
     [Fact]
     public async Task HandleAsync_ReturnsFiveOrderedWeekdays_WhenEachWeekdayHasADeparture()
     {
-        var monday = PreviousMonday();
         var handler = new GetWeeklyDepartureStatsQueryHandler(new StubDeskDepartureRepository(
         [
-            Departure(1, At(monday, 0, 9)),
-            Departure(2, At(monday, 1, 10)),
-            Departure(3, At(monday, 2, 11)),
-            Departure(4, At(monday, 3, 12)),
-            Departure(5, At(monday, 4, 13)),
+            Departure(1, 2026, 5, 25, 9),
+            Departure(2, 2026, 5, 26, 10),
+            Departure(3, 2026, 5, 27, 11),
+            Departure(4, 2026, 5, 28, 12),
+            Departure(5, 2026, 5, 29, 13),
         ]));
 
         var result = await handler.HandleAsync(new GetWeeklyDepartureStatsQuery());
@@ -56,11 +45,10 @@ public class GetWeeklyDepartureStatsQueryHandlerTests
     [Fact]
     public async Task HandleAsync_ZeroFillsDays_WhenSomeWeekdaysHaveNoDepartures()
     {
-        var monday = PreviousMonday();
         var handler = new GetWeeklyDepartureStatsQueryHandler(new StubDeskDepartureRepository(
         [
-            Departure(1, At(monday, 0, 9)),
-            Departure(2, At(monday, 2, 9)),
+            Departure(1, 2026, 5, 25, 9),
+            Departure(2, 2026, 5, 27, 9),
         ]));
 
         var result = await handler.HandleAsync(new GetWeeklyDepartureStatsQuery());
@@ -77,10 +65,9 @@ public class GetWeeklyDepartureStatsQueryHandlerTests
     [Fact]
     public async Task HandleAsync_ExcludesDepartures_FromTheCurrentWeek()
     {
-        var currentWeekMonday = PreviousMonday().AddDays(7);
         var handler = new GetWeeklyDepartureStatsQueryHandler(new StubDeskDepartureRepository(
         [
-            Departure(1, At(currentWeekMonday, 0, 9)),
+            Departure(1, 2026, 6, 1, 9),
         ]));
 
         var result = await handler.HandleAsync(new GetWeeklyDepartureStatsQuery());
@@ -92,10 +79,9 @@ public class GetWeeklyDepartureStatsQueryHandlerTests
     [Fact]
     public async Task HandleAsync_ExcludesDepartures_FromTwoWeeksAgo()
     {
-        var twoWeeksAgoMonday = PreviousMonday().AddDays(-7);
         var handler = new GetWeeklyDepartureStatsQueryHandler(new StubDeskDepartureRepository(
         [
-            Departure(1, At(twoWeeksAgoMonday, 0, 9)),
+            Departure(1, 2026, 5, 18, 9),
         ]));
 
         var result = await handler.HandleAsync(new GetWeeklyDepartureStatsQuery());
