@@ -8,7 +8,6 @@ internal sealed class DeskDepartureRepository(DeskWatchDbContext context) : IDes
 {
     public async Task<IReadOnlyList<DeskDepartureRecord>> GetAllAsync(CancellationToken cancellationToken = default)
         => await context.DeskDepartures
-            .OrderBy(d => d.DepartedAt)
             .Select(d => new DeskDepartureRecord(d.Id, d.ColleagueId, d.DepartedAt))
             .ToListAsync(cancellationToken);
 }
