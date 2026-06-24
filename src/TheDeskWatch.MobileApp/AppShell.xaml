@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:colleaguesPages="clr-namespace:TheDeskWatch.MobileApp.Pages.Colleagues.Pages"
     xmlns:logPages="clr-namespace:TheDeskWatch.MobileApp.Pages.Log.Pages"
+    xmlns:statsPages="clr-namespace:TheDeskWatch.MobileApp.Pages.Stats.Pages"
     Title="TheDeskWatch">
 
     <TabBar>
@@ -31,6 +32,18 @@
             <ShellContent
                 ContentTemplate="{DataTemplate logPages:LogPage}"
                 Route="Log" />
+        </Tab>
+        <Tab Title="Stats">
+            <Tab.Icon>
+                <FontImageSource
+                    FontFamily="FontAwesome6Solid"
+                    Glyph="&#xf080;"
+                    Size="22"
+                    Color="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
+            </Tab.Icon>
+            <ShellContent
+                ContentTemplate="{DataTemplate statsPages:StatsPage}"
+                Route="Stats" />
         </Tab>
     </TabBar>
 

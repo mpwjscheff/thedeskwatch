@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="TheDeskWatch.MobileApp.Pages.Stats.Pages.StatsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:charts="clr-namespace:Syncfusion.Maui.Toolkit.Charts;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:vm="clr-namespace:TheDeskWatch.MobileApp.Pages.Stats.ViewModels"
+    x:DataType="vm:StatsPageViewModel"
+    Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="{StaticResource StatsPagePadding}"
+            Spacing="{StaticResource StatsPageSpacing}">
+
+            <!-- Card 1: The Great Exodus -->
+            <Border Style="{StaticResource StatsCard}">
+                <VerticalStackLayout Spacing="{StaticResource StatsCardSpacing}">
+                    <Label
+                        Text="The Great Exodus"
+                        Style="{StaticResource StatsCardTitle}" />
+                    <charts:SfCartesianChart
+                        HeightRequest="{StaticResource StatsChartHeight}">
+                        <charts:SfCartesianChart.XAxes>
+                            <charts:CategoryAxis />
+                        </charts:SfCartesianChart.XAxes>
+                        <charts:SfCartesianChart.YAxes>
+                            <charts:NumericalAxis />
+                        </charts:SfCartesianChart.YAxes>
+                        <charts:ColumnSeries
+                            ItemsSource="{Binding ExodusChartData}"
+                            XBindingPath="Label"
+                            YBindingPath="Value"
+                            ShowDataLabels="True" />
+                    </charts:SfCartesianChart>
+                    <Label
+                        Text="{Binding PeakEscapeTimeLabel}"
+                        Style="{StaticResource StatsPeakLabel}" />
+                    <HorizontalStackLayout Spacing="{StaticResource StatsCaptionSpacing}">
+                        <Label
+                            Text="&#xf2f5;"
+                            Style="{StaticResource StatsCaptionGlyph}" />
+                        <Label
+                            Text="When the herd bolts"
+                            Style="{StaticResource StatsCaptionText}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Card 2: Coffee O'Clock -->
+            <Border Style="{StaticResource StatsCard}">
+                <VerticalStackLayout Spacing="{StaticResource StatsCardSpacing}">
+                    <Label
+                        Text="Coffee O'Clock"
+                        Style="{StaticResource StatsCardTitle}" />
+                    <charts:SfCartesianChart
+                        HeightRequest="{StaticResource StatsChartHeight}">
+                        <charts:SfCartesianChart.XAxes>
+                            <charts:CategoryAxis />
+                        </charts:SfCartesianChart.XAxes>
+                        <charts:SfCartesianChart.YAxes>
+                            <charts:NumericalAxis />
+                        </charts:SfCartesianChart.YAxes>
+                        <charts:ColumnSeries
+                            ItemsSource="{Binding CoffeeChartData}"
+                            XBindingPath="Label"
+                            YBindingPath="Value"
+                            ShowDataLabels="True" />
+                    </charts:SfCartesianChart>
+                    <HorizontalStackLayout Spacing="{StaticResource StatsCaptionSpacing}">
+                        <Label
+                            Text="&#xf7b6;"
+                            Style="{StaticResource StatsCaptionGlyph}" />
+                        <Label
+                            Text="Confirmed by data"
+                            Style="{StaticResource StatsCaptionText}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Card 3: The Post-Lunch Drift -->
+            <Border Style="{StaticResource StatsCard}">
+                <VerticalStackLayout Spacing="{StaticResource StatsCardSpacing}">
+                    <Label
+                        Text="The Post-Lunch Drift"
+                        Style="{StaticResource StatsCardTitle}" />
+                    <charts:SfCartesianChart
+                        HeightRequest="{StaticResource StatsChartHeight}">
+                        <charts:SfCartesianChart.XAxes>
+                            <charts:CategoryAxis />
+                        </charts:SfCartesianChart.XAxes>
+                        <charts:SfCartesianChart.YAxes>
+                            <charts:NumericalAxis />
+                        </charts:SfCartesianChart.YAxes>
+                        <charts:ColumnSeries
+                            ItemsSource="{Binding LunchChartData}"
+                            XBindingPath="Label"
+                            YBindingPath="Value"
+                            ShowDataLabels="True" />
+                    </charts:SfCartesianChart>
+                    <Label
+                        Text="🍔 food coma migration!"
+                        IsVisible="{Binding IsFoodComaMigration}"
+                        Style="{StaticResource StatsPeakLabel}" />
+                    <HorizontalStackLayout Spacing="{StaticResource StatsCaptionSpacing}">
+                        <Label
+                            Text="&#xf2e7;"
+                            Style="{StaticResource StatsCaptionGlyph}" />
+                        <Label
+                            Text="The food coma is real"
+                            Style="{StaticResource StatsCaptionText}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label
+                Text="{Binding ErrorMessage}"
+                Style="{StaticResource StatsCaptionText}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
