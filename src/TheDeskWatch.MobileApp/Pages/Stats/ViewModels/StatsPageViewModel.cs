@@ -23,6 +23,9 @@ public sealed partial class StatsPageViewModel : ObservableObject
     private ObservableCollection<ChartDataPoint> _lunchChartData = [];
 
     [ObservableProperty]
+    private ObservableCollection<ChartDataPoint> _weeklyDepartureChartData = [];
+
+    [ObservableProperty]
     private string _peakEscapeTimeLabel = string.Empty;
 
     [ObservableProperty]
@@ -43,7 +46,14 @@ public sealed partial class StatsPageViewModel : ObservableObject
     [RelayCommand]
     private async Task LoadStats()
     {
-        var result = await _queryMediator.QueryAsync(new GetStatsQuery());
+        var statsTask = _queryMediator.QueryAsync(new GetStatsQuery());
+        var weeklyTask = _queryMediator.QueryAsync(new GetWeeklyDepartureStatsQuery());
+
+        await Task.WhenAll(statsTask, weeklyTask);
+
+        var result = await statsTask;
+        var weeklyResult = await weeklyTask;
+
         result.Switch(
             response =>
             {
@@ -74,5 +84,20 @@ public sealed partial class StatsPageViewModel : ObservableObject
                 IsFoodComaMigration = response.Lunch.IsFoodComaMigration;
             },
             error => ErrorMessage = $"Failed to load stats: {error.Message}");
+
+        weeklyResult.Switch(
+            response =>
+            {
+                WeeklyDepartureChartData = new ObservableCollection<ChartDataPoint>(
+                    response.Days.Select(dto =>
+                        new ChartDataPoint(dto.DayLabel, dto.Count)));
+            },
+            error =>
+            {
+                var weeklyError = $"Failed to load weekly departures: {error.Message}";
+                ErrorMessage = string.IsNullOrEmpty(ErrorMessage)
+                    ? weeklyError
+                    : $"{ErrorMessage}{Environment.NewLine}{weeklyError}";
+            });
     }
 }
