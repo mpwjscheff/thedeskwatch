@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
             options.UseSqlite($"Data Source={databasePath}"));
 
         services.AddScoped<IColleagueRepository, ColleagueRepository>();
+        services.AddScoped<IDeskDepartureRepository, DeskDepartureRepository>();
 
         return services;
     }

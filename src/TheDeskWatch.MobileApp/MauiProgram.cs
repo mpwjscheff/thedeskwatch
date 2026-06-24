@@ -9,7 +9,10 @@ using TheDeskWatch.MobileApp.Pages.Colleagues.Pages;
 using TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
 using TheDeskWatch.MobileApp.Pages.Log.Pages;
 using TheDeskWatch.MobileApp.Pages.Log.ViewModels;
+using TheDeskWatch.MobileApp.Pages.Stats.Pages;
+using TheDeskWatch.MobileApp.Pages.Stats.ViewModels;
 using TheDeskWatch.Persistence;
+using Syncfusion.Maui.Toolkit.Hosting;
 
 namespace TheDeskWatch.MobileApp;
 
@@ -22,6 +25,7 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .UseSkiaSharp()
+            .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -49,6 +53,10 @@ public static class MauiProgram
         // Colleague detail page (shown as a swipe-to-dismiss modal)
         builder.Services.AddTransient<ColleagueDetailPage>();
         builder.Services.AddTransient<ColleagueDetailPageViewModel>();
+
+        // Stats page
+        builder.Services.AddTransient<StatsPage>();
+        builder.Services.AddTransient<StatsPageViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();
