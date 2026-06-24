@@ -1,18 +1,22 @@
 ﻿using System.Diagnostics;
+using TheDeskWatch.MobileApp.Pages.Welcome.Pages;
 
 namespace TheDeskWatch.MobileApp;
 
 public partial class App : Microsoft.Maui.Controls.Application
 {
-    public App()
+    private readonly IServiceProvider _serviceProvider;
+
+    public App(IServiceProvider serviceProvider)
     {
+        _serviceProvider = serviceProvider;
         InitializeComponent();
         WireGlobalExceptionHandlers();
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new Window(new AppShell());
+        return new Window(_serviceProvider.GetRequiredService<WelcomePage>());
     }
 
     private static void WireGlobalExceptionHandlers()

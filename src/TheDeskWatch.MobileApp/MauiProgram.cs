@@ -9,6 +9,8 @@ using TheDeskWatch.MobileApp.Pages.Colleagues.Pages;
 using TheDeskWatch.MobileApp.Pages.Colleagues.ViewModels;
 using TheDeskWatch.MobileApp.Pages.Log.Pages;
 using TheDeskWatch.MobileApp.Pages.Log.ViewModels;
+using TheDeskWatch.MobileApp.Pages.Welcome.Pages;
+using TheDeskWatch.MobileApp.Pages.Welcome.ViewModels;
 using TheDeskWatch.Persistence;
 
 namespace TheDeskWatch.MobileApp;
@@ -53,6 +55,10 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
+
+        builder.Services.AddTransient<AppShell>();
+        builder.Services.AddTransient<WelcomePage>();
+        builder.Services.AddTransient<WelcomePageViewModel>();
 
         var app = builder.Build();
         app.Services.InitializeDatabase();
