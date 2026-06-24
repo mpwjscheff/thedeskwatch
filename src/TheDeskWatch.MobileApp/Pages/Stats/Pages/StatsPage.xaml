@@ -127,7 +127,7 @@
                         <charts:SfCartesianChart.YAxes>
                             <charts:NumericalAxis />
                         </charts:SfCartesianChart.YAxes>
-                        <charts:ColumnSeries
+                        <charts:LineSeries
                             ItemsSource="{Binding WeeklyDepartureChartData}"
                             XBindingPath="Label"
                             YBindingPath="Value"
