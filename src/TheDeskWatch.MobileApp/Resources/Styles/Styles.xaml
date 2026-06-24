@@ -450,6 +450,55 @@
     <x:Double x:Key="PopupMinimumWidth">300</x:Double>
     <x:Double x:Key="ColorPickerHeight">260</x:Double>
 
+    <!-- Stats page tokens -->
+    <x:Double x:Key="StatsPageSpacing">24</x:Double>
+    <Thickness x:Key="StatsPagePadding">20,24</Thickness>
+    <Thickness x:Key="StatsCardPadding">16</Thickness>
+    <x:Double x:Key="StatsCardSpacing">12</x:Double>
+    <x:Double x:Key="StatsCardCornerRadius">16</x:Double>
+    <x:Double x:Key="StatsChartHeight">200</x:Double>
+    <x:Double x:Key="StatsCaptionSpacing">8</x:Double>
+    <x:Double x:Key="StatsCardTitleFontSize">20</x:Double>
+    <x:Double x:Key="StatsGlyphFontSize">18</x:Double>
+    <x:Double x:Key="StatsPeakLabelFontSize">16</x:Double>
+
+    <Style TargetType="Border" x:Key="StatsCard">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceBackgroundLight}, Dark={StaticResource SurfaceBackgroundDark}}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Padding" Value="{StaticResource StatsCardPadding}" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="{StaticResource StatsCardCornerRadius}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="StatsCardTitle">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextLight}, Dark={StaticResource PrimaryTextDark}}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="{StaticResource StatsCardTitleFontSize}" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="StatsPeakLabel">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource PrimaryDark}}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+        <Setter Property="FontSize" Value="{StaticResource StatsPeakLabelFontSize}" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="StatsCaptionGlyph">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource PrimaryDark}}" />
+        <Setter Property="FontFamily" Value="FontAwesome6Solid" />
+        <Setter Property="FontSize" Value="{StaticResource StatsGlyphFontSize}" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="StatsCaptionText">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource SecondaryTextLight}, Dark={StaticResource SecondaryTextDark}}" />
+        <Setter Property="FontSize" Value="{StaticResource SmallBodyFontSize}" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+
     <x:Double x:Key="BubbleSize">120</x:Double>
     <x:Double x:Key="BubbleFontSize">13</x:Double>
     <x:Double x:Key="BubbleGridSpacing">16</x:Double>
