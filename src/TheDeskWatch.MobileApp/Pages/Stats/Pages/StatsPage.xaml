@@ -113,6 +113,10 @@
                 </VerticalStackLayout>
             </Border>
 
+            <Label
+                Text="{Binding ErrorMessage}"
+                Style="{StaticResource StatsCaptionText}" />
+
         </VerticalStackLayout>
     </ScrollView>
 

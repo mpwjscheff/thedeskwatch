@@ -22,19 +22,23 @@ public sealed partial class StatsPageViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<ChartDataPoint> _lunchChartData = [];
 
+    [ObservableProperty]
+    private string _peakEscapeTimeLabel = string.Empty;
+
+    [ObservableProperty]
+    private bool _isFoodComaMigration;
+
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
+
     public StatsPageViewModel(IQueryMediator queryMediator)
     {
         _queryMediator = queryMediator;
         Title = "Stats";
         IsFoodComaMigration = false;
-        LoadStatsCommand.Execute(null);
     }
 
     public string Title { get; }
-
-    public string PeakEscapeTimeLabel { get; private set; } = string.Empty;
-
-    public bool IsFoodComaMigration { get; private set; }
 
     [RelayCommand]
     private async Task LoadStats()
@@ -69,6 +73,6 @@ public sealed partial class StatsPageViewModel : ObservableObject
 
                 IsFoodComaMigration = response.Lunch.IsFoodComaMigration;
             },
-            _ => { });
+            error => ErrorMessage = $"Failed to load stats: {error.Message}");
     }
 }
